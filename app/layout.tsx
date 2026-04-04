@@ -8,8 +8,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "My Portfolio",
-  description: "My personal website",
+  title: "MaxBoiz | Portfolio",
+  description: "Welcome to my personal portfolio website",
 };
 
 export default function RootLayout({
