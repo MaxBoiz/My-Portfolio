@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Lilita_One } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const lilitaOne = Lilita_One({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -18,11 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${spaceGrotesk.className} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
+    <html lang="en" className="h-full antialiased">
+      <body className={`${lilitaOne.className} min-h-full flex flex-col`}>
         {children}
       </body>
     </html>
