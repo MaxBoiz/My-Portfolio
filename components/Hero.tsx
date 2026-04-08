@@ -28,15 +28,7 @@ export default function Hero() {
       {/* Glow */}
       <div className="absolute left-10 top-1/3 w-72 h-72 bg-blue-600 opacity-10 blur-[100px] rounded-full pointer-events-none" />
 
-      {/* Badge */}
-      <motion.div variants={itemVariants} className="mb-4">
-        <span className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 tracking-widest uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-          Available for work
-        </span>
-      </motion.div>
-
-      {/* 🔥 FIX 1: Greeting TO HƠN */}
+      {/* Greeting */}
       <motion.h1
         variants={itemVariants}
         className="text-2xl text-gray-300 font-medium mb-2 tracking-wide"
@@ -44,16 +36,14 @@ export default function Hero() {
         Hi there! 👋 Welcome to my profile
       </motion.h1>
 
-      {/* 🔥 FIX 2: I'm NHỎ LẠI + KHÔNG WRAP */}
+      {/* Name + Type animation */}
       <motion.h2
         variants={itemVariants}
         className="text-4xl xl:text-5xl font-semibold tracking-tight leading-tight mb-4 flex items-center gap-2"
       >
         I'm{" "}
         <span
-          className="inline-block min-w-[260px] whitespace-nowrap
-                     text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400
-                     drop-shadow-[0_0_20px_rgba(99,102,241,0.6)]"
+          className="inline-block min-w-[260px] whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 drop-shadow-[0_0_20px_rgba(99,102,241,0.6)]"
         >
           <TypeAnimation
             sequence={[
@@ -67,8 +57,6 @@ export default function Hero() {
         </span>
       </motion.h2>
 
-      
-
       {/* Bio */}
       <motion.p
         variants={itemVariants}
@@ -78,14 +66,11 @@ export default function Hero() {
         <span className="text-white font-medium">
           web & mobile applications
         </span>{" "}
-        with smooth UI and delightful user experiences
+        with smooth UI and delightful user experiences.
       </motion.p>
 
       {/* Stats */}
-      <motion.div
-        variants={itemVariants}
-        className="flex gap-8 mb-8 text-sm"
-      >
+      <motion.div variants={itemVariants} className="flex gap-8 mb-8 text-sm">
         {[
           { value: "1+", label: "Years Exp" },
           { value: "10+", label: "Projects" },
@@ -97,11 +82,8 @@ export default function Hero() {
         ))}
       </motion.div>
 
-      {/* Buttons giữ nguyên */}
-      <motion.div
-        variants={itemVariants}
-        className="flex flex-wrap gap-3"
-      >
+      {/* Buttons */}
+      <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
         <button className="group relative px-6 py-2.5 rounded-xl font-medium text-sm text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_35px_rgba(99,102,241,0.7)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden">
           <span className="relative z-10">My Portfolio</span>
         </button>

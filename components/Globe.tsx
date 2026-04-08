@@ -37,7 +37,6 @@ export default function GlobeComponent() {
       controls.autoRotate = true;
       controls.autoRotateSpeed = 0.8;
       controls.enableZoom = false;
-
       // Tilt the globe slightly for a dramatic 3D feel
       globeRef.current.pointOfView({ lat: 20, lng: 0, altitude: 2 }, 0);
     }
@@ -92,6 +91,12 @@ export default function GlobeComponent() {
         initial={{ opacity: 0, scale: 0.85 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
+        style={{
+          width: 500,
+          height: 500,
+          clipPath: "circle(50%)",
+          overflow: "hidden",
+        }}
       >
         <Globe
           ref={globeRef}
