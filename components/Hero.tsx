@@ -7,6 +7,7 @@ import {
   FaLinkedinIn,
   FaTwitter,
   FaInstagram,
+  FaGithub,
 } from "react-icons/fa";
 
 const containerVariants = {
@@ -57,11 +58,19 @@ export default function Hero() {
       style:
         "hover:text-pink-500 hover:border-pink-500 hover:bg-gradient-to-r hover:from-pink-500/20 hover:via-purple-500/20 hover:to-yellow-500/20 hover:shadow-[0_0_25px_rgba(236,72,153,0.8)]",
     },
+    {
+      name: "GitHub",
+      username: "@MaxBoiz",
+      icon: <FaGithub />,
+      link: "https://github.com/MaxBoiz",
+      style:
+        "hover:text-gray-300 hover:border-gray-300 hover:bg-gray-300/10 hover:shadow-[0_0_25px_rgba(156,163,175,0.8)]",
+    },
   ];
 
   return (
     <motion.div
-      className="w-1/2 flex flex-col justify-center px-20 z-10 relative"
+      className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-10 lg:px-20 py-10 lg:py-0 z-10 relative"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -72,7 +81,7 @@ export default function Hero() {
       {/* Greeting */}
       <motion.h1
         variants={itemVariants}
-        className="text-2xl text-gray-300 font-medium mb-2 tracking-wide"
+        className="text-xl sm:text-2xl text-gray-300 font-medium mb-2 tracking-wide"
       >
         Hi there! 👋 Welcome to my profile
       </motion.h1>
@@ -80,10 +89,10 @@ export default function Hero() {
       {/* Name */}
       <motion.h2
         variants={itemVariants}
-        className="text-4xl xl:text-5xl font-semibold tracking-tight leading-tight mb-4 flex items-center gap-2"
+        className="text-3xl sm:text-4xl xl:text-5xl font-semibold tracking-tight leading-tight mb-4 flex flex-wrap items-center gap-2"
       >
         I'm{" "}
-        <span className="inline-block min-w-[260px] whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 drop-shadow-[0_0_20px_rgba(99,102,241,0.6)]">
+        <span className="inline-block min-w-[220px] sm:min-w-[260px] whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 drop-shadow-[0_0_20px_rgba(99,102,241,0.6)]">
           <TypeAnimation
             sequence={[
               "MaxBoy",
@@ -102,7 +111,7 @@ export default function Hero() {
       {/* Bio */}
       <motion.p
         variants={itemVariants}
-        className="mb-8 text-gray-400 leading-relaxed max-w-md text-base"
+        className="mb-8 text-gray-400 leading-relaxed max-w-md text-sm sm:text-base"
       >
         Passionate about crafting modern{" "}
         <span className="text-white font-medium">
@@ -112,35 +121,45 @@ export default function Hero() {
       </motion.p>
 
       {/* Stats */}
-      <motion.div variants={itemVariants} className="flex gap-8 mb-8 text-sm">
+      <motion.div
+        variants={itemVariants}
+        className="flex gap-6 sm:gap-8 mb-8 text-sm"
+      >
         {[
           { value: "1+", label: "Years Exp" },
           { value: "10+", label: "Projects" },
         ].map(({ value, label }) => (
           <div key={label} className="flex flex-col">
-            <span className="text-2xl font-bold text-white">{value}</span>
-            <span className="text-gray-500 text-xs mt-0.5">{label}</span>
+            <span className="text-xl sm:text-2xl font-bold text-white">
+              {value}
+            </span>
+            <span className="text-gray-500 text-xs mt-0.5">
+              {label}
+            </span>
           </div>
         ))}
       </motion.div>
 
       {/* Buttons */}
       <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
-        <button className="group relative px-6 py-2.5 rounded-xl font-medium text-sm text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_35px_rgba(99,102,241,0.7)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden">
+        <button className="group relative px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl font-medium text-xs sm:text-sm text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_35px_rgba(99,102,241,0.7)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden">
           <span className="relative z-10">My Portfolio</span>
         </button>
 
-        <button className="group relative px-6 py-2.5 rounded-xl font-medium text-sm text-white border border-gray-600 hover:border-blue-400 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden">
+        <button className="group relative px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl font-medium text-xs sm:text-sm text-white border border-gray-600 hover:border-blue-400 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden">
           <span className="relative z-10">Projects</span>
         </button>
 
-        <button className="group relative px-6 py-2.5 rounded-xl font-medium text-sm text-white border border-gray-600 hover:border-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden">
+        <button className="group relative px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl font-medium text-xs sm:text-sm text-white border border-gray-600 hover:border-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden">
           <span className="relative z-10">Get My CV</span>
         </button>
       </motion.div>
 
       {/* SOCIAL */}
-      <motion.div variants={itemVariants} className="flex gap-5 mt-16">
+      <motion.div
+        variants={itemVariants}
+        className="flex gap-4 sm:gap-5 mt-10 sm:mt-16 flex-wrap"
+      >
         {socials.map((item, index) => (
           <motion.a
             key={item.name}
@@ -156,7 +175,7 @@ export default function Hero() {
           >
             {/* ICON */}
             <div
-              className={`relative w-11 h-11 flex items-center justify-center rounded-xl
+              className={`relative w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl
               border border-gray-700 text-gray-400
               backdrop-blur-md bg-white/5
               transition-all duration-300
@@ -171,8 +190,8 @@ export default function Hero() {
               <span className="absolute inset-0 rounded-xl opacity-0 group-active:opacity-100 bg-white/20 animate-ping" />
             </div>
 
-            {/* TOOLTIP */}
-            <div className="absolute -top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+            {/* TOOLTIP (desktop only) */}
+            <div className="hidden sm:block absolute -top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
               <div className="px-3 py-1.5 rounded-md text-xs text-white bg-white/10 backdrop-blur-md border border-white/20 shadow-lg whitespace-nowrap text-center">
                 <div className="font-medium">{item.name}</div>
                 <div className="text-gray-400 text-[10px]">
