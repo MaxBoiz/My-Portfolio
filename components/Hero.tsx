@@ -83,7 +83,7 @@ export default function Hero() {
         variants={itemVariants}
         className="text-xl sm:text-2xl text-gray-300 font-medium mb-2 tracking-wide"
       >
-        Hi there! 👋 Welcome to my profile
+        Hi there! Welcome to my profile
       </motion.h1>
 
       {/* Name */}
