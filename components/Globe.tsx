@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import type { GlobeMethods } from "react-globe.gl";
 
 const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
 
@@ -34,7 +35,7 @@ const ringsData = [
 ];
 
 export default function GlobeComponent() {
-  const globeRef = useRef<any>(null);
+  const globeRef = useRef<GlobeMethods | undefined>(undefined);
 
   // 🔥 NEW: auto size
   const containerRef = useRef<HTMLDivElement>(null);
@@ -72,7 +73,7 @@ export default function GlobeComponent() {
 
         // 👉 centered ngay từ đầu (fix lệch)
         globeRef.current.pointOfView(
-          { lat: 0, lng: 0, altitude: 2.4 },
+          { lat: 16, lng: 108, altitude: 2.15 },
           1500
         );
       }
@@ -111,7 +112,7 @@ export default function GlobeComponent() {
   return (
     <div
       ref={containerRef}
-      className="w-full lg:w-1/2 flex items-center justify-center relative py-6 sm:py-8 lg:py-0"
+      className="relative flex w-full items-center justify-center py-6 sm:py-8 lg:py-0"
     >
       {/* Glow */}
       <div className="absolute scale-75 sm:scale-90 lg:scale-100 w-[520px] h-[520px] rounded-full border border-blue-500/10 animate-[spin_20s_linear_infinite]" />
@@ -122,11 +123,11 @@ export default function GlobeComponent() {
       {/* LABELS */}
       <div className="hidden sm:block">
         {[
-          { label: "React Native", x: "-left-6", y: "top-16", delay: 0 },
-          { label: "Next.js", x: "-right-0", y: "top-24", delay: 0.3 },
-          { label: "TypeScript", x: "-left-6", y: "bottom-28", delay: 0.6 },
-          { label: "Node.js", x: "-right-0", y: "bottom-20", delay: 0.9 },
-          { label: "Flutter", x: "-left-10", y: "top-1/2", delay: 1.2 },
+          { label: "React Native", x: "left-0", y: "top-16", delay: 0 },
+          { label: "Next.js", x: "right-16", y: "top-24", delay: 0.3 },
+          { label: "TypeScript", x: "left-0", y: "bottom-28", delay: 0.6 },
+          { label: "Node.js", x: "right-16", y: "bottom-20", delay: 0.9 },
+          { label: "Flutter", x: "left-0", y: "top-1/2", delay: 1.2 },
         ].map(({ label, x, y, delay }) => (
           <motion.div
             key={label}
@@ -175,8 +176,8 @@ export default function GlobeComponent() {
           width={size}
           height={size}
           backgroundColor="rgba(0,0,0,0)"
-          globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-          bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+          globeImageUrl="https://unpkg.com/three-globe/example/img/earth-night.jpg"
+          bumpImageUrl="https://unpkg.com/three-globe/example/img/earth-topology.png"
           atmosphereColor="rgba(99,102,241,0.6)"
           atmosphereAltitude={0.25}
           arcsData={arcsData}

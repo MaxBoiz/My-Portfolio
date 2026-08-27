@@ -1,15 +1,25 @@
 import type { Metadata } from "next";
-import { Lilita_One } from "next/font/google";
 import "./globals.css";
 
-const lilitaOne = Lilita_One({
-  subsets: ["latin"],
-  weight: ["400"],
-});
-
 export const metadata: Metadata = {
-  title: "MaxBoiz | Portfolio",
-  description: "Welcome to my personal portfolio website",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
+  title: "MaxBoy",
+  description:
+    "Software engineer crafting thoughtful web and mobile products from Vietnam.",
+  openGraph: {
+    title: "MaxBoy — Software Engineer",
+    description: "From Vietnam, building for the world.",
+    type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "MaxBoy — Software Engineer from Vietnam" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MaxBoy — Software Engineer",
+    description: "From Vietnam, building for the world.",
+    images: ["/og.png"],
+  },
 };
 
 export default function RootLayout({
@@ -19,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className={`${lilitaOne.className} min-h-full flex flex-col`}>
+      <body className="min-h-full flex flex-col">
         {children}
       </body>
     </html>
