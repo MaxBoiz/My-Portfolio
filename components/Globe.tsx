@@ -91,7 +91,7 @@ export default function GlobeComponent() {
 
     if (!isZoomed) {
       globeRef.current.pointOfView(
-        { lat: 16, lng: 108, altitude: 1.6 }, // 👈 fix lệch
+        { lat: 16, lng: 108, altitude: 1.9 },
         2000
       );
     } else {
@@ -123,15 +123,15 @@ export default function GlobeComponent() {
       {/* LABELS */}
       <div className="hidden sm:block">
         {[
-          { label: "React Native", x: "left-0", y: "top-16", delay: 0 },
-          { label: "Next.js", x: "right-16", y: "top-24", delay: 0.3 },
-          { label: "TypeScript", x: "left-0", y: "bottom-28", delay: 0.6 },
-          { label: "Node.js", x: "right-16", y: "bottom-20", delay: 0.9 },
-          { label: "Flutter", x: "left-0", y: "top-1/2", delay: 1.2 },
+          { label: "React Native", x: "-left-4", y: "top-16", delay: 0 },
+          { label: "Next.js", x: "right-10", y: "top-24", delay: 0.3 },
+          { label: "TypeScript", x: "-left-4", y: "bottom-28", delay: 0.6 },
+          { label: "Node.js", x: "right-10", y: "bottom-20", delay: 0.9 },
+          { label: "Flutter", x: "-left-4", y: "top-1/2", delay: 1.2 },
         ].map(({ label, x, y, delay }) => (
           <motion.div
             key={label}
-            className={`absolute ${x} ${y} text-xs font-medium px-3 py-1.5 rounded-full
+            className={`absolute ${x} ${y} text-xs font-medium px-4 py-1.5 rounded-full
               bg-gray-900/80 border border-gray-700 text-gray-300
               backdrop-blur-sm shadow-lg`}
             initial={{ opacity: 0, scale: 0.8 }}
