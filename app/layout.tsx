@@ -7,17 +7,17 @@ export const metadata: Metadata = {
   ),
   title: "MaxBoy",
   description:
-    "Software engineer crafting thoughtful web and mobile products from Vietnam.",
+    "Software engineer crafting thoughtful web and mobile products from Vietnam",
   openGraph: {
-    title: "MaxBoy — Software Engineer",
-    description: "From Vietnam, building for the world.",
+    title: "MaxBoy - Software Engineer",
+    description: "From Vietnam, building for the world",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "MaxBoy — Software Engineer from Vietnam" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "MaxBoy - Software Engineer from Vietnam" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "MaxBoy — Software Engineer",
-    description: "From Vietnam, building for the world.",
+    title: "MaxBoy - Software Engineer",
+    description: "From Vietnam, building for the world",
     images: ["/og.png"],
   },
 };

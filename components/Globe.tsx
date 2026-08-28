@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { GlobeMethods } from "react-globe.gl";
 
@@ -61,25 +61,20 @@ export default function GlobeComponent() {
     return () => observer.disconnect();
   }, []);
 
-  // 🔥 INIT GLOBE
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (globeRef.current) {
-        const controls = globeRef.current.controls();
+  // Chỉ khởi tạo controls sau khi WebGL globe thực sự sẵn sàng.
+  const handleGlobeReady = useCallback(() => {
+    if (!globeRef.current) return;
 
-        controls.autoRotate = true;
-        controls.autoRotateSpeed = 0.6;
-        controls.enableZoom = false;
+    const controls = globeRef.current.controls();
 
-        // 👉 centered ngay từ đầu (fix lệch)
-        globeRef.current.pointOfView(
-          { lat: 16, lng: 108, altitude: 2.15 },
-          1500
-        );
-      }
-    }, 500);
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.6;
+    controls.enableZoom = false;
 
-    return () => clearTimeout(timer);
+    globeRef.current.pointOfView(
+      { lat: 16, lng: 108, altitude: 2.15 },
+      1500
+    );
   }, []);
 
   // 🔥 CLICK ZOOM
@@ -173,6 +168,7 @@ export default function GlobeComponent() {
       >
         <Globe
           ref={globeRef}
+          onGlobeReady={handleGlobeReady}
           width={size}
           height={size}
           backgroundColor="rgba(0,0,0,0)"

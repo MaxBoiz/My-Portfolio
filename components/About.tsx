@@ -15,7 +15,7 @@ export default function About() {
         <div className="section-kicker"><span>02</span>Behind the build</div>
         <h2 className="section-title mt-8">Good software should feel human</h2>
         <p className="mt-8 max-w-xl text-base leading-8 text-slate-400">
-          My favorite work lives where engineering discipline meets visual curiosity. I enjoy turning ambiguous ideas into calm, useful experiences — and learning whatever the next build demands.
+          My favorite work lives where engineering discipline meets visual curiosity. I enjoy turning ambiguous ideas into calm, useful experiences and learning whatever the next build demands.
         </p>
 
         <div className="terminal-card mt-10 font-mono text-sm">

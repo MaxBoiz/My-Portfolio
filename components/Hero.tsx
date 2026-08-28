@@ -58,8 +58,8 @@ export default function Hero() {
         <a href="#contact" aria-label="Go to contact section" className="social-button"><FaLinkedinIn /></a>
       </motion.div>
 
-      <motion.div custom={0.44} variants={reveal} initial="hidden" animate="visible" className="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-white/10 pt-6">
-        {[["01+", "Years building"], ["10+", "Projects shipped"], ["∞", "Curiosity"]].map(([value, label]) => (
+      <motion.div custom={0.44} variants={reveal} initial="hidden" animate="visible" className="mt-14 grid max-w-xs grid-cols-2 gap-6 border-t border-white/10 pt-6">
+        {[["01+", "Years building"], ["10+", "Projects shipped"]].map(([value, label]) => (
           <div key={label}>
             <div className="font-mono text-lg font-bold text-white">{value}</div>
             <div className="mt-1 text-[11px] uppercase tracking-wider text-slate-500">{label}</div>
