@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { FaArrowDown, FaGithub, FaLinkedinIn } from "react-icons/fa";
+import { FaArrowDown, FaFilePdf } from "react-icons/fa";
 import { TypeAnimation } from "react-type-animation";
 
 const reveal = {
@@ -54,12 +54,19 @@ export default function Hero() {
           Explore my work
           <FaArrowDown className="text-xs transition-transform group-hover:translate-y-1" />
         </a>
-        <a href="https://github.com/MaxBoiz" target="_blank" rel="noreferrer" aria-label="View MaxBoy's GitHub profile" className="social-button"><FaGithub /></a>
-        <a href="#contact" aria-label="Go to contact section" className="social-button"><FaLinkedinIn /></a>
+        <a
+          href="/MaxBoy-CV.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className="group inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-3.5 text-sm font-semibold text-slate-300 transition hover:-translate-y-0.5 hover:border-indigo-300/50 hover:bg-indigo-500/10 hover:text-white"
+        >
+          <FaFilePdf className="text-indigo-300" />
+          View CV
+        </a>
       </motion.div>
 
       <motion.div custom={0.44} variants={reveal} initial="hidden" animate="visible" className="mt-14 grid max-w-xs grid-cols-2 gap-6 border-t border-white/10 pt-6">
-        {[["01+", "Years building"], ["10+", "Projects shipped"]].map(([value, label]) => (
+        {[["01+", "Years"], ["10+", "Projects"]].map(([value, label]) => (
           <div key={label}>
             <div className="font-mono text-lg font-bold text-white">{value}</div>
             <div className="mt-1 text-[11px] uppercase tracking-wider text-slate-500">{label}</div>

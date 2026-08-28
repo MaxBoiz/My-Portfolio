@@ -1,7 +1,9 @@
-import { FaArrowUp, FaFacebookF, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaArrowUp, FaFacebookF, FaGithub, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
 const links = [
   ["GitHub", "https://github.com/MaxBoiz", FaGithub],
+  // TODO: Replace "#" with your LinkedIn profile URL when it is available.
+  ["LinkedIn", "#", FaLinkedinIn],
   ["Facebook", "https://www.facebook.com/HuyMeowMeow", FaFacebookF],
   ["Instagram", "https://www.instagram.com/huylovemeow/", FaInstagram],
   ["X / Twitter", "https://x.com/kingzofd", FaTwitter],
@@ -21,7 +23,14 @@ export default function Contact() {
           <p className="max-w-xl text-base leading-8 text-slate-400">Let&apos;s turn it into something people enjoy using. Find me online and start with a simple hello.</p>
           <div className="flex flex-wrap gap-3">
             {links.map(([label, href, Icon]) => (
-              <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="contact-link">
+              <a
+                key={label}
+                href={href}
+                target={href === "#" ? undefined : "_blank"}
+                rel={href === "#" ? undefined : "noreferrer"}
+                aria-label={label}
+                className="contact-link"
+              >
                 <Icon /><span>{label}</span>
               </a>
             ))}
