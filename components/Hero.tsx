@@ -34,9 +34,9 @@ export default function Hero() {
         <span className="block bg-gradient-to-r from-indigo-300 via-white to-cyan-300 bg-clip-text text-transparent">products that feel alive</span>
       </motion.h1>
 
-      <motion.div custom={0.22} variants={reveal} initial="hidden" animate="visible" className="mt-6 flex flex-wrap items-center gap-x-2 text-xl font-bold tracking-tight text-white sm:text-2xl">
-        <span>I&apos;m</span>
-        <span className="w-full min-w-0 bg-gradient-to-r from-indigo-300 to-cyan-300 bg-clip-text text-transparent sm:w-auto sm:min-w-[330px]">
+      <motion.div custom={0.22} variants={reveal} initial="hidden" animate="visible" className="mt-6 flex flex-nowrap items-center gap-x-2 text-[clamp(1rem,5.5vw,1.5rem)] font-bold tracking-tight text-white sm:text-2xl">
+        <span className="shrink-0">I&apos;m</span>
+        <span className="min-w-0 flex-1 whitespace-nowrap bg-gradient-to-r from-indigo-300 to-cyan-300 bg-clip-text text-transparent sm:min-w-[330px] sm:flex-none">
           <TypeAnimation
             sequence={["MaxBoy", 2000, "a Software Engineer", 2000, "a Mobile Developer", 2000]}
             speed={50}
