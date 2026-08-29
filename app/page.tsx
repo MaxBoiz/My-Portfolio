@@ -9,9 +9,8 @@ export default function Home() {
     <main className="min-h-screen overflow-hidden bg-[#05070d] text-white">
       <div className="noise" />
       <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#05070d]/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 sm:px-10 lg:px-16">
-          <a href="#top" className="flex items-center gap-3" aria-label="Back to top">
-            <span className="grid h-9 w-9 place-items-center rounded-full border border-indigo-400/40 bg-indigo-400/10 font-mono text-xs font-bold text-indigo-200">MB</span>
+        <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-end px-6 sm:justify-between sm:px-10 lg:px-16">
+          <a href="#top" className="hidden items-center sm:flex" aria-label="Back to top">
             <span className="hidden text-xs font-semibold uppercase tracking-[0.22em] text-slate-300 sm:block">MaxBoy / Portfolio</span>
           </a>
           <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 sm:gap-9">

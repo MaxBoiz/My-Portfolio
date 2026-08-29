@@ -36,7 +36,7 @@ export default function Hero() {
 
       <motion.div custom={0.22} variants={reveal} initial="hidden" animate="visible" className="mt-6 flex flex-wrap items-center gap-x-2 text-xl font-bold tracking-tight text-white sm:text-2xl">
         <span>I&apos;m</span>
-        <span className="min-w-[270px] bg-gradient-to-r from-indigo-300 to-cyan-300 bg-clip-text text-transparent sm:min-w-[330px]">
+        <span className="w-full min-w-0 bg-gradient-to-r from-indigo-300 to-cyan-300 bg-clip-text text-transparent sm:w-auto sm:min-w-[330px]">
           <TypeAnimation
             sequence={["MaxBoy", 2000, "a Software Engineer", 2000, "a Mobile Developer", 2000]}
             speed={50}
@@ -46,7 +46,7 @@ export default function Hero() {
       </motion.div>
 
       <motion.div custom={0.32} variants={reveal} initial="hidden" animate="visible" className="mt-9 flex flex-wrap items-center gap-3">
-        <a href="#work" className="group inline-flex items-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-indigo-200">
+        <a href="#work" className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-indigo-200 sm:w-auto">
           Explore my work
           <FaArrowDown className="text-xs transition-transform group-hover:translate-y-1" />
         </a>
@@ -54,10 +54,14 @@ export default function Hero() {
           href="/MaxBoy-CV.pdf"
           target="_blank"
           rel="noreferrer"
-          className="group inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-3.5 text-sm font-semibold text-slate-300 transition hover:-translate-y-0.5 hover:border-indigo-300/50 hover:bg-indigo-500/10 hover:text-white"
+          className="cv-access-button group inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 px-5 py-3.5 text-sm font-semibold text-slate-300 sm:w-auto"
         >
-          <FaFilePdf className="text-indigo-300" />
-          View CV
+          <FaFilePdf className="cv-access-icon text-indigo-300" />
+          <span className="cv-access-copy">
+            <span className="cv-access-default">View CV</span>
+            <span className="cv-access-loading" aria-hidden="true">Accessing...</span>
+            <span className="cv-access-ready" aria-hidden="true">CV ready</span>
+          </span>
         </a>
       </motion.div>
 

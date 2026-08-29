@@ -34,12 +34,21 @@ const ringsData = [
   { lat: 10.8231, lng: 106.6297 },
 ];
 
+const stackSignals = [
+  { label: "React Native", code: "MOB-01", x: "-left-4", y: "top-16", side: "left", delay: 0 },
+  { label: "Next.js", code: "WEB-02", x: "right-10", y: "top-24", side: "right", delay: 0.3 },
+  { label: "TypeScript", code: "TYP-03", x: "-left-4", y: "bottom-28", side: "left", delay: 0.6 },
+  { label: "Node.js", code: "SYS-04", x: "right-10", y: "bottom-20", side: "right", delay: 0.9 },
+  { label: "Flutter", code: "MOB-05", x: "-left-4", y: "top-1/2", side: "left", delay: 1.2 },
+] as const;
+
 export default function GlobeComponent() {
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
 
   // 🔥 NEW: auto size
   const containerRef = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState(400);
+  const [size, setSize] = useState(0);
+  const zoomTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [isZoomed, setIsZoomed] = useState(false);
 
@@ -51,14 +60,20 @@ export default function GlobeComponent() {
       const width = entries[0].contentRect.width;
 
       // 👇 giữ max 500 để không phá desktop
-      const newSize = Math.min(width, 500);
+      const newSize = Math.floor(Math.min(width, 500));
 
-      setSize(newSize);
+      if (newSize > 0) setSize(newSize);
     });
 
     observer.observe(containerRef.current);
 
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (zoomTimerRef.current) clearTimeout(zoomTimerRef.current);
+    };
   }, []);
 
   // Chỉ khởi tạo controls sau khi WebGL globe thực sự sẵn sàng.
@@ -96,7 +111,8 @@ export default function GlobeComponent() {
       );
     }
 
-    setTimeout(() => {
+    if (zoomTimerRef.current) clearTimeout(zoomTimerRef.current);
+    zoomTimerRef.current = setTimeout(() => {
       controls.autoRotate = true;
       controls.autoRotateSpeed = isZoomed ? 0.6 : 0.3;
     }, 2000);
@@ -107,7 +123,7 @@ export default function GlobeComponent() {
   return (
     <div
       ref={containerRef}
-      className="relative flex w-full items-center justify-center py-6 sm:py-8 lg:py-0"
+      className="relative flex min-h-[260px] w-full items-center justify-center py-6 sm:min-h-[500px] sm:py-8 lg:py-0"
     >
       {/* Glow */}
       <div className="absolute scale-75 sm:scale-90 lg:scale-100 w-[520px] h-[520px] rounded-full border border-blue-500/10 animate-[spin_20s_linear_infinite]" />
@@ -117,18 +133,13 @@ export default function GlobeComponent() {
 
       {/* LABELS */}
       <div className="hidden sm:block">
-        {[
-          { label: "React Native", x: "-left-4", y: "top-16", delay: 0 },
-          { label: "Next.js", x: "right-10", y: "top-24", delay: 0.3 },
-          { label: "TypeScript", x: "-left-4", y: "bottom-28", delay: 0.6 },
-          { label: "Node.js", x: "right-10", y: "bottom-20", delay: 0.9 },
-          { label: "Flutter", x: "-left-4", y: "top-1/2", delay: 1.2 },
-        ].map(({ label, x, y, delay }) => (
+        {stackSignals.map(({ label, code, x, y, side, delay }) => (
           <motion.div
             key={label}
-            className={`absolute ${x} ${y} text-xs font-medium px-4 py-1.5 rounded-full
+            className={`globe-tech-label globe-tech-label-${side} absolute ${x} ${y} text-xs font-medium px-4 py-1.5 rounded-full
               bg-gray-900/80 border border-gray-700 text-gray-300
               backdrop-blur-sm shadow-lg`}
+            tabIndex={0}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{
               opacity: 1,
@@ -146,56 +157,71 @@ export default function GlobeComponent() {
               },
             }}
           >
-            {label}
+            <span className="globe-tech-name">{label}</span>
+            <span className="globe-tech-telemetry" aria-hidden="true">
+              <span>Stack detected</span>
+              <strong><i />{code} · Active</strong>
+            </span>
           </motion.div>
         ))}
       </div>
 
       {/* Globe */}
-      <motion.div
-        onClick={handleClick}
-        className="cursor-pointer flex items-center justify-center"
-        suppressHydrationWarning
-        initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-        style={{
-          width: size,
-          height: size,
-          clipPath: "circle(50%)",
-          overflow: "hidden",
-        }}
-      >
-        <Globe
-          ref={globeRef}
-          onGlobeReady={handleGlobeReady}
-          width={size}
-          height={size}
-          backgroundColor="rgba(0,0,0,0)"
-          globeImageUrl="https://unpkg.com/three-globe/example/img/earth-night.jpg"
-          bumpImageUrl="https://unpkg.com/three-globe/example/img/earth-topology.png"
-          atmosphereColor="rgba(99,102,241,0.6)"
-          atmosphereAltitude={0.25}
-          arcsData={arcsData}
-          arcColor={() => ["rgba(99,102,241,0.9)", "rgba(168,85,247,0.9)"]}
-          arcDashLength={0.4}
-          arcDashGap={0.2}
-          arcDashAnimateTime={2000}
-          arcStroke={0.5}
-          arcAltitude={0.25}
-          pointsData={pointsData}
-          pointLabel="label"
-          pointColor={() => "rgba(99,102,241,1)"}
-          pointAltitude={0.01}
-          pointRadius={0.4}
-          pointsMerge={false}
-          ringsData={ringsData}
-          ringColor={() => "rgba(99,102,241,0.6)"}
-          ringMaxRadius={3}
-          ringPropagationSpeed={2}
-          ringRepeatPeriod={1500}
-        />
-      </motion.div>
+      {size > 0 && (
+        <motion.div
+          onClick={handleClick}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              handleClick();
+            }
+          }}
+          className="globe-interaction flex cursor-pointer items-center justify-center"
+          role="button"
+          tabIndex={0}
+          aria-label={isZoomed ? "Zoom globe out" : "Zoom globe in"}
+          aria-pressed={isZoomed}
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          style={{
+            width: size,
+            height: size,
+            clipPath: "circle(50%)",
+            overflow: "hidden",
+          }}
+        >
+          <Globe
+            ref={globeRef}
+            onGlobeReady={handleGlobeReady}
+            width={size}
+            height={size}
+            backgroundColor="rgba(0,0,0,0)"
+            globeImageUrl="https://unpkg.com/three-globe/example/img/earth-night.jpg"
+            bumpImageUrl="https://unpkg.com/three-globe/example/img/earth-topology.png"
+            atmosphereColor="#6366f1"
+            atmosphereAltitude={0.25}
+            arcsData={arcsData}
+            arcColor={() => ["rgba(99,102,241,0.9)", "rgba(168,85,247,0.9)"]}
+            arcDashLength={0.4}
+            arcDashGap={0.2}
+            arcDashAnimateTime={2000}
+            arcStroke={0.5}
+            arcAltitude={0.25}
+            pointsData={pointsData}
+            pointLabel="label"
+            pointColor={() => "rgba(99,102,241,1)"}
+            pointAltitude={0.01}
+            pointRadius={0.4}
+            pointsMerge={false}
+            ringsData={ringsData}
+            ringColor={() => "rgba(99,102,241,0.6)"}
+            ringMaxRadius={3}
+            ringPropagationSpeed={2}
+            ringRepeatPeriod={1500}
+          />
+        </motion.div>
+      )}
     </div>
   );
 }
