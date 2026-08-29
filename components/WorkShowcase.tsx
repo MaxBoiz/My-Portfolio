@@ -7,9 +7,15 @@ const capabilities = [
   {
     number: "01",
     label: "Mobile engineering",
-    title: "Products designed to travel",
+    title: "Vinfast Car Makerplace",
     copy: "Cross-platform mobile experiences shaped around clear flows, responsive feedback, and the details people notice every day.",
     tags: ["React Native", "Flutter", "Product thinking"],
+    readout: [
+      ["Mode", "Cross-platform"],
+      ["Input", "Product signal"],
+      ["Output", "Native feel"],
+    ],
+    status: "Sync ready",
     icon: FaMobileAlt,
     accent: "from-indigo-500/25 to-cyan-400/5",
   },
@@ -19,6 +25,12 @@ const capabilities = [
     title: "Interfaces with a pulse",
     copy: "Expressive web products where motion has a purpose, performance stays visible, and every screen earns its place.",
     tags: ["Next.js", "TypeScript", "Motion"],
+    readout: [
+      ["Mode", "Realtime UI"],
+      ["Input", "Motion layer"],
+      ["Output", "Clear response"],
+    ],
+    status: "Interface live",
     icon: FaLayerGroup,
     accent: "from-fuchsia-500/20 to-indigo-400/5",
   },
@@ -28,6 +40,12 @@ const capabilities = [
     title: "Curiosity, made useful",
     copy: "APIs, prototypes, and small technical experiments that turn unfamiliar ideas into things you can actually use.",
     tags: ["Node.js", "APIs", "Prototyping"],
+    readout: [
+      ["Mode", "Prototype loop"],
+      ["Input", "Unknown signal"],
+      ["Output", "Useful system"],
+    ],
+    status: "Experiment active",
     icon: FaCode,
     accent: "from-cyan-500/20 to-emerald-400/5",
   },
@@ -40,11 +58,8 @@ export default function WorkShowcase() {
         <span>01</span>
         Selected capabilities
       </div>
-      <div className="mt-8 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+      <div className="mt-8">
         <h2 className="section-title max-w-3xl">The work is the proof</h2>
-        <p className="max-w-md text-sm leading-7 text-slate-400 sm:text-base">
-          I care about the complete path from an early idea to the moment a product feels natural in someone&apos;s hands.
-        </p>
       </div>
 
       <div className="mt-16 grid gap-5 lg:grid-cols-3">
@@ -57,19 +72,54 @@ export default function WorkShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.65, delay: index * 0.1 }}
-              className="work-card group"
+              className="work-card"
+              tabIndex={0}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${item.accent} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
+              <div className={`work-card-accent absolute inset-0 bg-gradient-to-br ${item.accent}`} />
+              <div className="work-card-grid" aria-hidden="true" />
+              <div className="work-card-scanline" aria-hidden="true" />
+              <span className="work-card-corner work-card-corner-tl" aria-hidden="true" />
+              <span className="work-card-corner work-card-corner-tr" aria-hidden="true" />
+              <span className="work-card-corner work-card-corner-bl" aria-hidden="true" />
+              <span className="work-card-corner work-card-corner-br" aria-hidden="true" />
+
               <div className="relative z-10">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-slate-500">MISSION / {item.number}</span>
-                  <span className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-indigo-200"><Icon /></span>
+                  <span className="work-card-mission font-mono text-xs text-slate-500">
+                    MISSION / {item.number}
+                    <span aria-hidden="true">{"// SCANNING"}</span>
+                  </span>
+                  <span className="work-card-icon grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-indigo-200"><Icon /></span>
                 </div>
                 <p className="mt-16 text-xs font-bold uppercase tracking-[0.2em] text-indigo-300">{item.label}</p>
-                <h3 className="mt-3 text-3xl font-bold leading-tight tracking-[-0.035em] text-white">{item.title}</h3>
-                <p className="mt-5 min-h-24 text-sm leading-7 text-slate-400">{item.copy}</p>
-                <div className="mt-8 flex flex-wrap gap-2">
-                  {item.tags.map((tag) => <span key={tag} className="tech-tag">{tag}</span>)}
+                <h3 className="work-card-title mt-3 text-3xl font-bold leading-tight tracking-[-0.035em] text-white">{item.title}</h3>
+
+                <div className="work-card-body">
+                  <div className="work-card-default">
+                    <p className="min-h-24 text-sm leading-7 text-slate-400">{item.copy}</p>
+                    <div className="mt-8 flex flex-wrap gap-2">
+                      {item.tags.map((tag) => <span key={tag} className="tech-tag">{tag}</span>)}
+                    </div>
+                  </div>
+
+                  <div className="work-card-readout" aria-hidden="true">
+                    <div className="work-card-readout-header">
+                      <span>Automated readout</span>
+                      <span className="work-card-live"><i /> Live</span>
+                    </div>
+                    <div className="work-card-readout-data">
+                      {item.readout.map(([label, value]) => (
+                        <div className="work-card-readout-row" key={label}>
+                          <span>{label}</span>
+                          <strong>{value}</strong>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="work-card-status">
+                      <div className="work-card-status-line"><span>System status</span><strong>{item.status}</strong></div>
+                      <div className="work-card-progress"><span /></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.article>

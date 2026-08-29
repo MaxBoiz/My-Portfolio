@@ -11,7 +11,7 @@ const links = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative overflow-hidden border-t border-white/[0.08]">
+    <section id="contact" className="relative overflow-hidden">
       <div className="contact-glow" />
       <div className="section-shell relative z-10 py-28 sm:py-36">
         <div className="section-kicker"><span>03</span>Open channel</div>
@@ -19,7 +19,7 @@ export default function Contact() {
         <h2 className="section-title mt-4 max-w-5xl">
           Have an idea worth building?
         </h2>
-        <div className="mt-12 flex flex-col justify-between gap-10 border-t border-white/10 pt-8 lg:flex-row lg:items-end">
+        <div className="mt-12 flex flex-col justify-between gap-10 pt-8 lg:flex-row lg:items-end">
           <p className="max-w-xl text-base leading-8 text-slate-400">Let&apos;s turn it into something people enjoy using. Find me online and start with a simple hello.</p>
           <div className="flex flex-wrap gap-3">
             {links.map(([label, href, Icon]) => (

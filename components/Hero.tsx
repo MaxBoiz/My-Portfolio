@@ -45,10 +45,6 @@ export default function Hero() {
         </span>
       </motion.div>
 
-      <motion.p custom={0.28} variants={reveal} initial="hidden" animate="visible" className="mt-4 max-w-xl text-base leading-7 text-slate-400 sm:text-lg">
-        I craft thoughtful web and mobile experiences, from the first sketch to the final interaction.
-      </motion.p>
-
       <motion.div custom={0.32} variants={reveal} initial="hidden" animate="visible" className="mt-9 flex flex-wrap items-center gap-3">
         <a href="#work" className="group inline-flex items-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-indigo-200">
           Explore my work

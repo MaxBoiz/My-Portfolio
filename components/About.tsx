@@ -29,7 +29,7 @@ export default function About() {
         </div>
       </div>
 
-      <div className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
+      <div>
         {principles.map(([number, title, copy], index) => (
           <motion.div
             key={number}
