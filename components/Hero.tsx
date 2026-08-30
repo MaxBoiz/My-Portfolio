@@ -14,6 +14,14 @@ const reveal = {
   }),
 } satisfies Variants;
 
+// Change this single value to true when the updated CV is ready to publish.
+const CV_IS_READY = false;
+const CV_FILE_PATH = "/MaxBoy-CV.pdf";
+
+const cvCopy = CV_IS_READY
+  ? { default: "View CV", loading: "Accessing...", result: "CV ready" }
+  : { default: "CV updating", loading: "Checking...", result: "Not ready" };
+
 export default function Hero() {
   return (
     <section className="relative z-10 flex w-full flex-col justify-center lg:w-[54%]">
@@ -51,16 +59,23 @@ export default function Hero() {
           <FaArrowDown className="text-xs transition-transform group-hover:translate-y-1" />
         </a>
         <a
-          href="/MaxBoy-CV.pdf"
-          target="_blank"
-          rel="noreferrer"
-          className="cv-access-button group inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 px-5 py-3.5 text-sm font-semibold text-slate-300 sm:w-auto"
+          href={CV_IS_READY ? CV_FILE_PATH : undefined}
+          target={CV_IS_READY ? "_blank" : undefined}
+          rel={CV_IS_READY ? "noreferrer" : undefined}
+          role={CV_IS_READY ? undefined : "button"}
+          aria-disabled={!CV_IS_READY}
+          aria-label={CV_IS_READY ? "View CV" : "CV is being updated and is not available yet"}
+          tabIndex={CV_IS_READY ? undefined : 0}
+          onClick={(event) => {
+            if (!CV_IS_READY) event.preventDefault();
+          }}
+          className={`cv-access-button group inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 px-5 py-3.5 text-sm font-semibold text-slate-300 sm:w-auto${CV_IS_READY ? "" : " cv-access-unavailable"}`}
         >
           <FaFilePdf className="cv-access-icon text-indigo-300" />
           <span className="cv-access-copy">
-            <span className="cv-access-default">View CV</span>
-            <span className="cv-access-loading" aria-hidden="true">Accessing...</span>
-            <span className="cv-access-ready" aria-hidden="true">CV ready</span>
+            <span className="cv-access-default">{cvCopy.default}</span>
+            <span className="cv-access-loading" aria-hidden="true">{cvCopy.loading}</span>
+            <span className="cv-access-ready" aria-hidden="true">{cvCopy.result}</span>
           </span>
         </a>
       </motion.div>
