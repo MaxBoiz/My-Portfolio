@@ -331,8 +331,14 @@ body { margin: 0; overflow-x: clip; background: var(--background); color: var(--
 .mission-report-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
 .mission-report-tags span { border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 999px; padding: 7px 10px; color: rgb(148 163 184); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
 .mission-report-actions { display: grid; gap: 8px; }
-.mission-report-actions a { display: flex; align-items: center; gap: 9px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 999px; padding: 11px 14px; color: rgb(203 213 225); font-size: 11px; font-weight: 700; transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease; }
-.mission-report-actions a:is(:hover, :focus-visible) { border-color: rgba(165, 180, 252, 0.42); outline: none; background: rgba(99, 102, 241, 0.1); color: white; }
+.mission-report-actions .mission-report-action { display: flex; width: 100%; align-items: center; gap: 9px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 999px; padding: 11px 14px; background: transparent; color: rgb(203 213 225); font-size: 11px; font-weight: 700; text-align: left; cursor: not-allowed; transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease; }
+.mission-report-action > svg { flex: 0 0 auto; }
+.mission-report-action-copy { display: inline-grid; align-items: center; }
+.mission-report-action-copy > span { grid-area: 1 / 1; white-space: nowrap; transition: opacity 160ms ease, transform 220ms ease; }
+.mission-report-action-uploading { opacity: 0; transform: translateY(6px); color: rgb(165 180 252); }
+.mission-report-actions .mission-report-action:is(:hover, :focus-visible) { border-color: rgba(165, 180, 252, 0.42); outline: none; background: rgba(99, 102, 241, 0.1); color: white; }
+.mission-report-action:is(:hover, :focus-visible) .mission-report-action-default { opacity: 0; transform: translateY(-6px); }
+.mission-report-action:is(:hover, :focus-visible) .mission-report-action-uploading { opacity: 1; transform: translateY(0); }
 
 .repo-console {
   position: relative;
@@ -649,7 +655,7 @@ body { margin: 0; overflow-x: clip; background: var(--background); color: var(--
   .mission-report-signal dl > div { align-items: flex-start; }
   .mission-report-signal dd { max-width: 58%; text-align: right; }
   .mission-report-actions { padding-bottom: max(4px, env(safe-area-inset-bottom)); }
-  .mission-report-actions a { min-height: 44px; justify-content: center; }
+  .mission-report-actions .mission-report-action { min-height: 44px; justify-content: center; }
 }
 
 @media (hover: none), (pointer: coarse) {

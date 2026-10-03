@@ -278,8 +278,20 @@ export default function WorkShowcase() {
                   </div>
 
                   <div className="mission-report-actions">
-                    <a href="https://github.com/MaxBoiz" target="_blank" rel="noreferrer"><FaGithub /> Inspect GitHub</a>
-                    <a href="/MaxBoy-CV.pdf" target="_blank" rel="noreferrer"><FaFilePdf /> View ENG CV</a>
+                    <button type="button" className="mission-report-action" aria-disabled="true" aria-label="GitHub is uploading and is not available yet">
+                      <FaGithub aria-hidden="true" />
+                      <span className="mission-report-action-copy" aria-hidden="true">
+                        <span className="mission-report-action-default">Inspect GitHub</span>
+                        <span className="mission-report-action-uploading">Uploading</span>
+                      </span>
+                    </button>
+                    <button type="button" className="mission-report-action" aria-disabled="true" aria-label="CV is uploading and is not available yet">
+                      <FaFilePdf aria-hidden="true" />
+                      <span className="mission-report-action-copy" aria-hidden="true">
+                        <span className="mission-report-action-default">View ENG CV</span>
+                        <span className="mission-report-action-uploading">Uploading</span>
+                      </span>
+                    </button>
                   </div>
                 </aside>
               </div>
