@@ -27,13 +27,37 @@
   transition: filter 160ms ease;
 }
 .arrowBody { fill: #000; }
+.facets { opacity: 0.85; transition: opacity 180ms ease; }
+.bevel { opacity: 0.38; transition: opacity 180ms ease; }
+.facetSeams {
+  stroke: #a78bfa;
+  opacity: 0.22;
+  transition: opacity 180ms ease, stroke 180ms ease, filter 180ms ease;
+}
+.junction {
+  fill: #c4b5fd;
+  opacity: 0.65;
+  transition: opacity 180ms ease, fill 180ms ease, filter 180ms ease;
+}
 .pointer[data-mode="interactive"] .arrow {
   filter: drop-shadow(0 0 2px rgba(196, 181, 253, 0.75)) drop-shadow(0 0 4px rgba(139, 92, 246, 0.35));
+}
+.pointer[data-mode="interactive"] .facets { opacity: 1; }
+.pointer[data-mode="interactive"] .bevel { opacity: 0.5; }
+.pointer[data-mode="interactive"] .facetSeams {
+  stroke: #ede9fe;
+  opacity: 1;
+  filter: drop-shadow(0 0 1px rgba(139, 92, 246, 0.9));
+}
+.pointer[data-mode="interactive"] .junction {
+  fill: #f5f3ff;
+  opacity: 1;
+  filter: drop-shadow(0 0 1px rgba(167, 139, 250, 0.9));
 }
 
 @media (max-width: 639px), (hover: none), (pointer: coarse) {
   .pointer { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .arrow { transition: none; }
+  .arrow, .facets, .bevel, .facetSeams, .junction { transition: none; }
 }
