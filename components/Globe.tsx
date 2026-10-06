@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { GlobeMethods } from "react-globe.gl";
+import { useSignalInteraction } from "./ConnectedSignals";
+import signalStyles from "./ConnectedSignals.module.css";
 
 const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
 
@@ -35,14 +37,20 @@ const ringsData = [
 ];
 
 const stackSignals = [
-  { label: "React Native", code: "MOB-01", x: "-left-4", y: "top-16", side: "left", delay: 0 },
-  { label: "Next.js", code: "WEB-02", x: "right-10", y: "top-24", side: "right", delay: 0.3 },
-  { label: "TypeScript", code: "TYP-03", x: "-left-4", y: "bottom-28", side: "left", delay: 0.6 },
-  { label: "Node.js", code: "SYS-04", x: "right-10", y: "bottom-20", side: "right", delay: 0.9 },
-  { label: "Flutter", code: "MOB-05", x: "-left-4", y: "top-1/2", side: "left", delay: 1.2 },
+  { label: "React Native", channel: "mobile", code: "MOB-01", x: "-left-4", y: "top-16", side: "left", delay: 0 },
+  { label: "Next.js", channel: "web", code: "WEB-02", x: "right-10", y: "top-24", side: "right", delay: 0.3 },
+  { label: "TypeScript", channel: "web", code: "TYP-03", x: "-left-4", y: "bottom-28", side: "left", delay: 0.6 },
+  { label: "Node.js", channel: "systems", code: "SYS-04", x: "right-10", y: "bottom-20", side: "right", delay: 0.9 },
+  { label: "Flutter", channel: "mobile", code: "MOB-05", x: "-left-4", y: "top-1/2", side: "left", delay: 1.2 },
 ] as const;
 
+// Stable accessors avoid rebuilding globe layers when only a signal accent changes.
+const arcColor = () => ["rgba(99,102,241,0.9)", "rgba(168,85,247,0.9)"];
+const pointColor = () => "rgba(99,102,241,1)";
+const ringColor = () => "rgba(99,102,241,0.6)";
+
 export default function GlobeComponent() {
+  const { activeSignal, signalInteraction } = useSignalInteraction();
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
 
   // 🔥 NEW: auto size
@@ -130,16 +138,24 @@ export default function GlobeComponent() {
       <div className="absolute scale-75 sm:scale-90 lg:scale-100 w-[560px] h-[560px] rounded-full border border-purple-500/5 animate-[spin_30s_linear_infinite_reverse]" />
       <div className="absolute scale-75 sm:scale-90 lg:scale-100 w-[460px] h-[460px] bg-blue-600 opacity-15 blur-[80px] rounded-full" />
       <div className="absolute scale-75 sm:scale-90 lg:scale-100 w-[300px] h-[300px] bg-indigo-500 opacity-10 blur-[60px] rounded-full" />
+      <div
+        className={`${signalStyles.halo} ${activeSignal ? signalStyles[activeSignal] : ""} absolute h-[520px] w-[520px] scale-75 rounded-full sm:scale-90 lg:scale-100`}
+        data-signal-active={activeSignal !== null}
+        aria-hidden="true"
+      />
 
       {/* LABELS */}
       <div className="hidden sm:block">
-        {stackSignals.map(({ label, code, x, y, side, delay }) => (
+        {stackSignals.map(({ label, channel, code, x, y, side, delay }) => (
           <motion.div
             key={label}
-            className={`globe-tech-label globe-tech-label-${side} absolute ${x} ${y} text-xs font-medium px-4 py-1.5 rounded-full
+            className={`globe-tech-label globe-tech-label-${side} ${signalStyles.label} ${signalStyles[channel]} absolute ${x} ${y} text-xs font-medium px-4 py-1.5 rounded-full
               bg-gray-900/80 border border-gray-700 text-gray-300
               backdrop-blur-sm shadow-lg`}
             tabIndex={0}
+            data-signal-channel={channel}
+            data-signal-active={activeSignal === channel}
+            {...signalInteraction(channel, `stack-${code}`)}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{
               opacity: 1,
@@ -202,7 +218,7 @@ export default function GlobeComponent() {
             atmosphereColor="#6366f1"
             atmosphereAltitude={0.25}
             arcsData={arcsData}
-            arcColor={() => ["rgba(99,102,241,0.9)", "rgba(168,85,247,0.9)"]}
+            arcColor={arcColor}
             arcDashLength={0.4}
             arcDashGap={0.2}
             arcDashAnimateTime={2000}
@@ -210,12 +226,12 @@ export default function GlobeComponent() {
             arcAltitude={0.25}
             pointsData={pointsData}
             pointLabel="label"
-            pointColor={() => "rgba(99,102,241,1)"}
+            pointColor={pointColor}
             pointAltitude={0.01}
             pointRadius={0.4}
             pointsMerge={false}
             ringsData={ringsData}
-            ringColor={() => "rgba(99,102,241,0.6)"}
+            ringColor={ringColor}
             ringMaxRadius={3}
             ringPropagationSpeed={2}
             ringRepeatPeriod={1500}

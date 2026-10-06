@@ -1,0 +1,60 @@
+.mobile { --signal-rgb: 103, 232, 249; }
+.web { --signal-rgb: 192, 132, 252; }
+.systems { --signal-rgb: 110, 231, 183; }
+
+/* Only accents respond: typography, dimensions, readouts and buttons stay intact. */
+.card[data-signal-active="true"] {
+  border-color: rgba(var(--signal-rgb), 0.5);
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.42), 0 0 28px rgba(var(--signal-rgb), 0.1), inset 0 0 40px rgba(var(--signal-rgb), 0.045);
+}
+
+.card :global(.work-card-accent) {
+  background: linear-gradient(135deg, rgba(var(--signal-rgb), 0.18), rgba(var(--signal-rgb), 0.025));
+}
+
+.card[data-signal-active="true"] :global(.work-card-accent) { opacity: 1; }
+.card[data-signal-active="true"] :global(.work-card-icon) {
+  color: rgb(var(--signal-rgb));
+  border-color: rgba(var(--signal-rgb), 0.45);
+  background: rgba(var(--signal-rgb), 0.1);
+  box-shadow: 0 0 24px rgba(var(--signal-rgb), 0.15);
+}
+
+.card[data-signal-active="true"] :global(.work-card-corner),
+.card[data-signal-active="true"] :global(.tech-tag) { border-color: rgba(var(--signal-rgb), 0.55); }
+.card[data-signal-active="true"] :global(.work-card-mission) > span,
+.card[data-signal-active="true"] :global(.work-card-readout-header),
+.card[data-signal-active="true"] :global(.work-card-live),
+.card[data-signal-active="true"] :global(.work-card-status-line) strong { color: rgb(var(--signal-rgb)); }
+
+.card :global(.work-card-scanline) {
+  background: linear-gradient(90deg, transparent, rgba(var(--signal-rgb), 0.3), rgb(var(--signal-rgb)), rgba(var(--signal-rgb), 0.3), transparent);
+  box-shadow: 0 0 18px rgba(var(--signal-rgb), 0.7), 0 8px 24px rgba(var(--signal-rgb), 0.12);
+}
+.card :global(.work-card-progress) span {
+  background: linear-gradient(90deg, rgba(var(--signal-rgb), 0.5), rgb(var(--signal-rgb)));
+}
+.card :global(.tech-tag) { transition: border-color 300ms ease; }
+
+.label[data-signal-active="true"] {
+  color: rgb(var(--signal-rgb));
+  border-color: rgba(var(--signal-rgb), 0.65);
+  background: rgba(8, 15, 26, 0.95);
+  box-shadow: 0 0 22px rgba(var(--signal-rgb), 0.22), inset 0 0 12px rgba(var(--signal-rgb), 0.06);
+}
+.label :global(.globe-tech-telemetry) { border-color: rgba(var(--signal-rgb), 0.35); }
+.label :global(.globe-tech-telemetry) > span,
+.label :global(.globe-tech-telemetry) i { color: rgb(var(--signal-rgb)); }
+.label :global(.globe-tech-telemetry) i { background: currentColor; box-shadow: 0 0 8px currentColor; }
+
+.halo {
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle, transparent 38%, rgba(var(--signal-rgb), 0.1) 60%, transparent 72%);
+  transition: opacity 450ms ease;
+}
+.halo[data-signal-active="true"] { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .halo, .card :global(.tech-tag) { transition: none; }
+}

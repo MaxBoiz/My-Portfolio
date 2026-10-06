@@ -1,0 +1,303 @@
+.card {
+  isolation: isolate;
+  font-family: "Segoe UI", Arial, sans-serif;
+  width: 100%;
+  height: 464px;
+  min-height: 430px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(165, 180, 252, .24);
+  border-radius: 24px;
+  background: #0b0f19;
+  box-shadow: 0 26px 78px rgba(67,61,113,.075), inset 0 1px 0 rgba(15,23,42,.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transform: translateZ(0);
+  transition: border-color 520ms ease, box-shadow 520ms ease;
+}
+
+.card.isSuccess {
+  border-color: rgba(25,193,141,.25);
+  box-shadow:
+    0 24px 74px rgba(48,155,130,.12),
+    0 0 0 1px rgba(38,203,154,.07),
+    0 0 44px rgba(23,190,138,.10),
+    inset 0 1px 0 rgba(15,23,42,.95);
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  padding: 58px 48px 62px;
+  text-align: center;
+}
+
+.copy {
+  position: relative;
+  z-index: 6;
+  will-change: transform, opacity;
+}
+
+.copy h2 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -.86px;
+  font-weight: 760;
+  color: #f8fafc;
+}
+
+.copy p {
+  margin: 13px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 420;
+  color: #94a3b8;
+}
+
+.otpWrap {
+  position: absolute;
+  left: 50%;
+  top: 220px;
+  z-index: 10;
+  display: flex;
+  gap: 13px;
+  transform: translate3d(-50%,0,0);
+  will-change: opacity, transform;
+}
+
+.otpInput,
+.orbitDigit {
+  width: 62px;
+  height: 70px;
+  border-radius: 13px;
+  border: 1.55px solid #b9b7c6;
+  background: rgba(15,23,42,.82);
+  color: #e2e8f0;
+  box-shadow: 0 3px 8px rgba(60,54,92,.05), inset 0 1px 0 rgba(15,23,42,.95);
+  font-family: inherit;
+  font-size: 29px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  outline: none;
+  caret-color: #5d50c9;
+  transform: translateZ(0);
+}
+
+.otpInput {
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.otpInput.active {
+  border-color: #6f62d1;
+  box-shadow: 0 0 0 3px rgba(108,93,209,.09), 0 4px 12px rgba(62,56,107,.07);
+  transform: translate3d(0,-1px,0);
+}
+
+.otpInput.filled { border-color: #8679dc; }
+
+.orbitZone {
+  position: absolute;
+  inset: 0;
+  z-index: 14;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.orbitDigit {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border-color: #8174d4;
+  background: rgba(15,23,42,.95);
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+}
+
+.cardFooter {
+  position: absolute;
+  z-index: 50;
+  left: 0;
+  right: 0;
+  bottom: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #c4c2ca;
+  will-change: opacity, transform;
+}
+
+.cardFooter button {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #877ed1;
+  font: inherit;
+  cursor: pointer;
+}
+.cardFooter button:hover { color: #5e53bd; }
+
+.stageVerify,
+.stageSuccess {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stageVerify,
+.stageSuccess { padding-top: 58px; }
+
+.progressShell {
+  position: absolute;
+  left: 50%;
+  top: 205px;
+  width: 92px;
+  height: 92px;
+  transform: translate3d(-50%,0,0) scale(1);
+  display: grid;
+  place-items: center;
+  opacity: 1;
+  will-change: opacity, transform, filter;
+}
+
+.progressRing {
+  width: 92px;
+  height: 92px;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+
+.progressTrack,
+.progressValue { fill: none; stroke-width: 7; }
+.progressTrack { stroke: #1b2037; }
+.progressValue {
+  stroke: #818cf8;
+  stroke-linecap: round;
+  stroke-dasharray: 295.31;
+  stroke-dashoffset: 295.31;
+  filter: drop-shadow(0 0 3px rgba(102,83,211,.24));
+  /* Important: no CSS transition here. JS draws every frame. */
+}
+
+.progressShell::before,
+.progressShell::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(112,97,216,.11);
+  opacity: .72;
+}
+.progressShell::after { inset: -16px; opacity: .25; }
+
+.progressNumber {
+  position: absolute;
+  font-size: 14px;
+  font-weight: 760;
+  color: #a5b4fc;
+  letter-spacing: -.2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.successOrb {
+  position: absolute;
+  left: 50%;
+  top: 212px;
+  width: 70px;
+  height: 70px;
+  margin-left: -35px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: translateZ(0) scale(.18);
+  background: #16bf8b;
+  box-shadow: 0 0 0 13px rgba(29,194,143,.08), 0 0 0 28px rgba(29,194,143,.05), 0 0 58px 26px rgba(29,194,143,.30);
+  will-change: transform, opacity, filter;
+}
+
+.checkMark {
+  color: white;
+  font-size: 26px;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(.55);
+  will-change: transform, opacity;
+}
+
+.stageSuccess .copy h2 { letter-spacing: -.72px; }
+
+.successCore {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 208px;
+  width: 64px;
+  height: 64px;
+  margin-left: -32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 26px;
+  font-weight: 760;
+  background: linear-gradient(145deg,#27c99a,#12b27f);
+  box-shadow: 0 8px 18px rgba(22,181,132,.27), 0 0 0 11px rgba(25,191,140,.08), 0 0 43px 20px rgba(25,191,140,.18);
+  opacity: 0;
+  transform: scale(.62);
+  will-change: transform, opacity;
+}
+
+.verifiedPill {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 300px;
+  transform: translate3d(-50%,6px,0);
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #7ad8bd;
+  color: #fff;
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 1.6px;
+  font-weight: 750;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.particles {
+  position: absolute;
+  inset: 132px 55px 84px;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0;
+  background: #ffd369;
+  will-change: transform, opacity;
+}
+.particle:nth-child(3n) { background: #83dabe; }
+.particle:nth-child(3n + 1) { background: #f2b5d0; }
+
+@media (max-width: 520px) {
+  .card { height: 500px; border-radius: 22px; }
+  .stage { padding-left: 22px; padding-right: 22px; }
+  .copy h2 { font-size: 25px; }
+  .otpWrap { gap: 9px; }
+  .otpInput, .orbitDigit { width: 57px; height: 66px; }
+}
+
+
+.close { position: absolute; z-index: 60; top: 12px; right: 12px; display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(255,255,255,.1); border-radius: 50%; color: #94a3b8; }
+.close:is(:hover, :focus-visible) { outline: none; color: white; border-color: rgba(165,180,252,.5); background: rgba(99,102,241,.12); }
+@media (max-width: 520px) { .close { width: 44px; height: 44px; } }

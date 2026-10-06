@@ -1,12 +1,16 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FaArrowRight, FaCode, FaFilePdf, FaGithub, FaLayerGroup, FaMobileAlt, FaTimes } from "react-icons/fa";
+import MissionReportSequence from "./MissionReportSequence";
+import { useSignalInteraction, type SignalChannel } from "./ConnectedSignals";
+import signalStyles from "./ConnectedSignals.module.css";
 
 const capabilities = [
   {
     number: "01",
+    channel: "mobile" as SignalChannel,
     label: "Mobile engineering",
     title: "Vinfast Car Makerplace",
     copy: "Cross-platform mobile experiences shaped around clear flows, responsive feedback, and the details people notice every day.",
@@ -23,6 +27,7 @@ const capabilities = [
   },
   {
     number: "02",
+    channel: "web" as SignalChannel,
     label: "Web experiences",
     title: "Interfaces with a pulse",
     copy: "Expressive web products where motion has a purpose, performance stays visible, and every screen earns its place.",
@@ -39,6 +44,7 @@ const capabilities = [
   },
   {
     number: "03",
+    channel: "systems" as SignalChannel,
     label: "Systems & experiments",
     title: "Curiosity, made useful",
     copy: "APIs, prototypes, and small technical experiments that turn unfamiliar ideas into things you can actually use.",
@@ -56,14 +62,60 @@ const capabilities = [
 ];
 
 export default function WorkShowcase() {
+  const { activeSignal, signalInteraction } = useSignalInteraction();
   const [isReportOpen, setIsReportOpen] = useState(false);
+  const [isReportOpening, setIsReportOpening] = useState(false);
+  const [reportReduceMotion, setReportReduceMotion] = useState(false);
   const reportTriggerRef = useRef<HTMLButtonElement>(null);
   const reportPanelRef = useRef<HTMLDivElement>(null);
+  const reportCloseRef = useRef<HTMLButtonElement>(null);
+
+  const reportPanelReveal: Variants = {
+    hidden: {
+      opacity: 0,
+      scale: reportReduceMotion ? 1 : 0.96,
+      clipPath: reportReduceMotion ? "inset(0% 0% round 0px)" : "inset(18% 24% round 24px)",
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      clipPath: "inset(0% 0% round 0px)",
+      transition: {
+        opacity: { duration: 0.32 },
+        scale: { duration: 0.72, ease: [0.22, 1, 0.36, 1] },
+        clipPath: { duration: reportReduceMotion ? 0 : 0.72, ease: [0.22, 1, 0.36, 1] },
+      },
+    },
+    exit: { opacity: 0, transition: { duration: 0.18 } },
+  };
+
+  const reportContentReveal: Variants = {
+    hidden: { opacity: 0, y: reportReduceMotion ? 0 : 14 },
+    visible: (order: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: reportReduceMotion ? 0.28 : 0.5,
+        delay: (reportReduceMotion ? 0.06 : 0.2) + order * (reportReduceMotion ? 0.04 : 0.09),
+        ease: [0.22, 1, 0.36, 1],
+      },
+    }),
+  };
+
+  const openReport = () => {
+    if (isReportOpen) return;
+    setReportReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    setIsReportOpening(true);
+    setIsReportOpen(true);
+  };
 
   const closeReport = useCallback(() => {
+    setIsReportOpening(false);
     setIsReportOpen(false);
     window.requestAnimationFrame(() => reportTriggerRef.current?.focus());
   }, []);
+
+  const finishReportOpening = useCallback(() => setIsReportOpening(false), []);
 
   useEffect(() => {
     if (!isReportOpen) return;
@@ -75,11 +127,17 @@ export default function WorkShowcase() {
       const focusable = Array.from(
         reportPanelRef.current.querySelectorAll<HTMLElement>("button:not([disabled]), a[href]"),
       ).filter((element) => element.offsetParent !== null);
-      if (focusable.length === 0) return;
+      if (focusable.length === 0) {
+        event.preventDefault();
+        return;
+      }
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
+      if (!reportPanelRef.current.contains(document.activeElement)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      } else if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && document.activeElement === last) {
@@ -115,7 +173,10 @@ export default function WorkShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.65, delay: index * 0.1 }}
-              className={`work-card${item.featured ? " work-card-featured" : ""}`}
+              className={`work-card${item.featured ? " work-card-featured" : ""} ${signalStyles.card} ${signalStyles[item.channel]}`}
+              data-signal-channel={item.channel}
+              data-signal-active={activeSignal === item.channel}
+              {...signalInteraction(item.channel, `mission-${item.number}`)}
               tabIndex={0}
             >
               <div className={`work-card-accent absolute inset-0 bg-gradient-to-br ${item.accent}`} />
@@ -170,9 +231,10 @@ export default function WorkShowcase() {
                   ref={reportTriggerRef}
                   type="button"
                   className="mission-report-trigger"
-                  onClick={() => setIsReportOpen(true)}
+                  onClick={openReport}
                   aria-haspopup="dialog"
                   aria-controls="mission-report-dialog"
+                  aria-expanded={isReportOpen}
                 >
                   <span>Open mission report</span>
                   <FaArrowRight aria-hidden="true" />
@@ -213,55 +275,78 @@ export default function WorkShowcase() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: reportReduceMotion ? 0 : 0.18 }}
             onMouseDown={closeReport}
           >
+            {/* Finish the loading-card exit before revealing the report frame. */}
+            <AnimatePresence mode="wait" initial={false}>
             <motion.div
+              key={isReportOpening ? "report-loading" : "report-content"}
               ref={reportPanelRef}
               id="mission-report-dialog"
-              className="mission-report-panel"
+              className={`mission-report-panel${isReportOpening ? " is-opening" : ""}`}
+              style={isReportOpening ? {
+                width: "min(100%, 456px)",
+                minHeight: 0,
+                maxHeight: "none",
+                overflow: "visible",
+                border: 0,
+                background: "transparent",
+                boxShadow: "none",
+              } : undefined}
               role="dialog"
               aria-modal="true"
-              aria-labelledby="mission-report-title"
-              initial={{ opacity: 0, y: 28, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 18, scale: 0.99 }}
+              aria-labelledby={isReportOpening ? undefined : "mission-report-title"}
+              aria-label={isReportOpening ? "Opening mission report" : undefined}
+              aria-busy={isReportOpening}
+              variants={isReportOpening ? undefined : reportPanelReveal}
+              initial={isReportOpening ? false : "hidden"}
+              animate={isReportOpening ? { opacity: 1, scale: 1 } : "visible"}
+              exit={isReportOpening ? { opacity: 0, scale: reportReduceMotion ? 1 : 0.96 } : "exit"}
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={(definition) => {
+                if (definition === "visible") reportCloseRef.current?.focus({ preventScroll: true });
+              }}
               onMouseDown={(event) => event.stopPropagation()}
             >
               <div className="mission-report-grid" aria-hidden="true" />
-              <header className="mission-report-header">
+              {isReportOpening ? (
+                <MissionReportSequence onComplete={finishReportOpening} onCancel={closeReport} />
+              ) : (
+                <>
+              <motion.header className="mission-report-header" variants={reportContentReveal} custom={0}>
                 <div>
                   <p>Featured mission // 01</p>
                   <h2 id="mission-report-title">Vinfast Car Makerplace</h2>
                 </div>
-                <button type="button" onClick={closeReport} autoFocus aria-label="Close mission report"><FaTimes /></button>
-              </header>
+                <button ref={reportCloseRef} type="button" onClick={closeReport} aria-label="Close mission report"><FaTimes /></button>
+              </motion.header>
 
               <div className="mission-report-layout">
                 <div className="mission-report-main">
-                  <section>
+                  <motion.section variants={reportContentReveal} custom={1}>
                     <p className="mission-report-label">Mission brief</p>
                     <p className="mission-report-lead">Cross-platform mobile experiences shaped around clear flows, responsive feedback, and the details people notice every day.</p>
-                  </section>
+                  </motion.section>
 
-                  <section>
+                  <motion.section variants={reportContentReveal} custom={2}>
                     <p className="mission-report-label">Engineering focus</p>
                     <div className="mission-report-focus">
                       <article><span>01</span><h3>Clear flows</h3><p>Keep the path through the product understandable and calm.</p></article>
                       <article><span>02</span><h3>Responsive feedback</h3><p>Make every interaction communicate what the system is doing.</p></article>
                       <article><span>03</span><h3>Native feel</h3><p>Carry one product direction across mobile platforms without losing care.</p></article>
                     </div>
-                  </section>
+                  </motion.section>
 
-                  <section>
+                  <motion.section variants={reportContentReveal} custom={3}>
                     <p className="mission-report-label">Build loop</p>
                     <div className="mission-report-flow" aria-label="Product build loop">
                       <span>Product signal</span><FaArrowRight /><span>Cross-platform</span><FaArrowRight /><span>Native feel</span>
                     </div>
-                  </section>
+                  </motion.section>
                 </div>
 
-                <aside className="mission-report-aside">
+                <motion.aside className="mission-report-aside" variants={reportContentReveal} custom={2}>
                   <div className="mission-report-signal">
                     <p>System readout</p>
                     <dl>
@@ -293,11 +378,14 @@ export default function WorkShowcase() {
                       </span>
                     </button>
                   </div>
-                </aside>
+                </motion.aside>
               </div>
 
               {/* TODO: Add verified role, screenshots, repository link, and measurable outcomes when they are available. */}
+                </>
+              )}
             </motion.div>
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>

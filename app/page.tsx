@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import WorkShowcase from "@/components/WorkShowcase";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
+import ConnectedSignals from "@/components/ConnectedSignals";
 
 export default function Home() {
   return (
@@ -21,16 +22,18 @@ export default function Home() {
         </div>
       </nav>
 
-      <div id="top" className="relative mx-auto flex min-h-screen max-w-[1440px] flex-col px-6 pb-12 pt-32 sm:px-10 lg:flex-row lg:items-center lg:px-16 lg:pt-24">
-        <div className="hero-grid" />
-        <div className="orb orb-one" />
-        <Hero />
-        <div className="relative mt-10 flex w-full items-center justify-center lg:mt-0 lg:w-[46%]">
-          <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600 xl:block [writing-mode:vertical-rl]">16.0544° N · 108.2022° E · Signal active</div>
-          <Globe />
+      <ConnectedSignals>
+        <div id="top" className="relative mx-auto flex min-h-screen max-w-[1440px] flex-col px-6 pb-12 pt-32 sm:px-10 lg:flex-row lg:items-center lg:px-16 lg:pt-24">
+          <div className="hero-grid" />
+          <div className="orb orb-one" />
+          <Hero />
+          <div className="relative mt-10 flex w-full items-center justify-center lg:mt-0 lg:w-[46%]">
+            <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600 xl:block [writing-mode:vertical-rl]">16.0544° N · 108.2022° E · Signal active</div>
+            <Globe />
+          </div>
         </div>
-      </div>
-      <WorkShowcase />
+        <WorkShowcase />
+      </ConnectedSignals>
       <About />
       <Contact />
     </main>
