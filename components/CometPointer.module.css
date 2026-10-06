@@ -1,0 +1,39 @@
+/* Applied to the body only while a desktop mouse has a visible replacement. */
+@media (min-width: 640px) and (hover: hover) and (pointer: fine) {
+  .enabled,
+  .enabled * { cursor: none !important; }
+}
+
+.pointer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 24px;
+  height: 28px;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  visibility: hidden;
+  contain: layout style;
+}
+.pointer[data-visible="true"] { opacity: 1; visibility: visible; }
+
+.arrow {
+  position: relative;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 0 1.5px rgba(196, 181, 253, 0.6)) drop-shadow(0 0 3px rgba(139, 92, 246, 0.25));
+  transition: filter 160ms ease;
+}
+.arrowBody { fill: #000; }
+.pointer[data-mode="interactive"] .arrow {
+  filter: drop-shadow(0 0 2px rgba(196, 181, 253, 0.75)) drop-shadow(0 0 4px rgba(139, 92, 246, 0.35));
+}
+
+@media (max-width: 639px), (hover: none), (pointer: coarse) {
+  .pointer { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arrow { transition: none; }
+}

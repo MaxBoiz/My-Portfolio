@@ -4,10 +4,12 @@ import WorkShowcase from "@/components/WorkShowcase";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import ConnectedSignals from "@/components/ConnectedSignals";
+import CometPointer from "@/components/CometPointer";
 
 export default function Home() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#05070d] text-white">
+      <CometPointer />
       <div className="noise" />
       <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-[#05070d]/70 backdrop-blur-xl">
         <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-end px-6 sm:justify-between sm:px-10 lg:px-16">
