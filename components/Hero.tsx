@@ -20,7 +20,7 @@ const CV_FILE_PATH = "/MaxBoy-CV.pdf";
 
 const cvCopy = CV_IS_READY
   ? { default: "View CV", loading: "Accessing...", result: "CV ready" }
-  : { default: "CV updating", loading: "Checking...", result: "Not ready" };
+  : { default: "View CV", loading: null, result: "Uploading" };
 
 export default function Hero() {
   return (
@@ -54,9 +54,9 @@ export default function Hero() {
       </motion.div>
 
       <motion.div custom={0.32} variants={reveal} initial="hidden" animate="visible" className="mt-9 flex flex-wrap items-center gap-3">
-        <a href="#work" className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-indigo-200 sm:w-auto">
+        <a href="#work" className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-slate-950 transition-colors hover:bg-indigo-200 sm:w-auto">
           Explore my work
-          <FaArrowDown className="text-xs transition-transform group-hover:translate-y-1" />
+          <FaArrowDown className="text-xs" />
         </a>
         <a
           href={CV_IS_READY ? CV_FILE_PATH : undefined}
@@ -64,7 +64,7 @@ export default function Hero() {
           rel={CV_IS_READY ? "noreferrer" : undefined}
           role={CV_IS_READY ? undefined : "button"}
           aria-disabled={!CV_IS_READY}
-          aria-label={CV_IS_READY ? "View CV" : "CV is being updated and is not available yet"}
+          aria-label={CV_IS_READY ? "View CV" : "CV is uploading and is not available yet"}
           tabIndex={CV_IS_READY ? undefined : 0}
           onClick={(event) => {
             if (!CV_IS_READY) event.preventDefault();
@@ -74,8 +74,8 @@ export default function Hero() {
           <FaFilePdf className="cv-access-icon text-indigo-300" />
           <span className="cv-access-copy">
             <span className="cv-access-default">{cvCopy.default}</span>
-            <span className="cv-access-loading" aria-hidden="true">{cvCopy.loading}</span>
-            <span className="cv-access-ready" aria-hidden="true">{cvCopy.result}</span>
+            {cvCopy.loading && <span className="cv-access-loading" aria-hidden="true">{cvCopy.loading}</span>}
+            <span className={CV_IS_READY ? "cv-access-ready" : "cv-access-uploading"} aria-hidden="true">{cvCopy.result}</span>
           </span>
         </a>
       </motion.div>
