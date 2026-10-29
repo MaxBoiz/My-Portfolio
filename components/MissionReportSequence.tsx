@@ -5,16 +5,17 @@ import { FaTimes } from "react-icons/fa";
 import styles from "./MissionReportSequence.module.css";
 import { runMissionReportSequence } from "./mission-report-sequence";
 
-export default function MissionReportSequence({ onComplete, onCancel }: {
+export default function MissionReportSequence({ onComplete, onCancel, reducedMotion }: {
   onComplete: () => void;
   onCancel: () => void;
+  reducedMotion: boolean;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!cardRef.current) return;
-    return runMissionReportSequence(cardRef.current, onComplete);
-  }, [onComplete]);
+    return runMissionReportSequence(cardRef.current, onComplete, { reducedMotion });
+  }, [onComplete, reducedMotion]);
 
   return (
     <div ref={cardRef} className={styles.card} data-mission-sequence>

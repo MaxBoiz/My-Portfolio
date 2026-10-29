@@ -19,25 +19,22 @@ export default function Contact() {
         <h2 className="section-title mt-4 max-w-5xl">
           Have an idea worth building?
         </h2>
-        <div className="mt-12 flex flex-col justify-between gap-10 pt-8 lg:flex-row lg:items-end">
-          <p className="max-w-xl text-base leading-8 text-slate-400">Let&apos;s turn it into something people enjoy using. Find me online and start with a simple hello.</p>
-          <div className="flex flex-wrap gap-3">
-            {links.map(([label, href, Icon, brand]) => (
-              <a
-                key={label}
-                href={href}
-                target={href === "#" ? undefined : "_blank"}
-                rel={href === "#" ? undefined : "noreferrer"}
-                aria-label={label}
-                className={`contact-link contact-link-${brand}`}
-              >
-                <span className="contact-link-signal" aria-hidden="true" />
-                <Icon className="contact-link-icon" /><span>{label}</span>
-                <span className="contact-link-status" aria-hidden="true"><i />Signal // Connect</span>
-              </a>
-            ))}
-          </div>
-        </div>
+      </div>
+      <div className="section-shell relative z-10 flex flex-wrap gap-3 pb-6 sm:justify-end">
+        {links.map(([label, href, Icon, brand]) => (
+          <a
+            key={label}
+            href={href}
+            target={href === "#" ? undefined : "_blank"}
+            rel={href === "#" ? undefined : "noreferrer"}
+            aria-label={label}
+            className={`contact-link contact-link-${brand}`}
+          >
+            <span className="contact-link-signal" aria-hidden="true" />
+            <Icon className="contact-link-icon" /><span>{label}</span>
+            <span className="contact-link-status" aria-hidden="true"><i />Signal // Connect</span>
+          </a>
+        ))}
       </div>
       <footer className="section-shell relative z-10 flex flex-col gap-4 border-t border-white/[0.08] py-7 text-[11px] uppercase tracking-[0.16em] text-slate-600 sm:flex-row sm:items-center sm:justify-between">
         <span>© 2026 MaxBoy · Designed & engineered in Vietnam</span>

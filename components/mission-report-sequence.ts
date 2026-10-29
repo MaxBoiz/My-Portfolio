@@ -4,7 +4,14 @@ type OrbitDigit = { el: HTMLDivElement; x: number; y: number; w: number; h: numb
 
 // Ported from secure-vault-rebuild-v3/script.js: original timings and trajectory.
 // The sequence is decorative and does not perform authentication or a download.
-export function runMissionReportSequence(card: HTMLElement, onComplete: () => void) {
+export function runMissionReportSequence(card: HTMLElement, onComplete: () => void, options: { reducedMotion?: boolean } = {}) {
+  // Web Animations and RAF do not follow the CSS reduced-motion rule.
+  // Keep cancellation working while bypassing the decorative orbit sequence.
+  if (options.reducedMotion) {
+    const timer = setTimeout(onComplete, 180);
+    return () => clearTimeout(timer);
+  }
+
   function required<T extends Element>(selector: string): T {
     const element = card.querySelector<T>(selector);
     if (!element) throw new Error("Missing mission sequence element: " + selector);
@@ -28,11 +35,6 @@ export function runMissionReportSequence(card: HTMLElement, onComplete: () => vo
   let timers: ReturnType<typeof setTimeout>[] = [];
   let animationFrame = 0;
   let activeAnimations: Animation[] = [];
-
-
-
-
-
   const ease = {
     outCubic: (t: number) => 1 - Math.pow(1 - t, 3),
     inOutCubic: (t: number) => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2,

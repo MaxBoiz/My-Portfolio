@@ -112,7 +112,12 @@ export default function WorkShowcase() {
   const closeReport = useCallback(() => {
     setIsReportOpening(false);
     setIsReportOpen(false);
-    window.requestAnimationFrame(() => reportTriggerRef.current?.focus());
+    window.requestAnimationFrame(() => {
+      const trigger = reportTriggerRef.current;
+      // Reveal the desktop trigger before restoring focus to it.
+      trigger?.closest<HTMLElement>(".work-card-featured")?.focus({ preventScroll: true });
+      trigger?.focus({ preventScroll: true });
+    });
   }, []);
 
   const finishReportOpening = useCallback(() => setIsReportOpening(false), []);
@@ -311,7 +316,7 @@ export default function WorkShowcase() {
             >
               <div className="mission-report-grid" aria-hidden="true" />
               {isReportOpening ? (
-                <MissionReportSequence onComplete={finishReportOpening} onCancel={closeReport} />
+                <MissionReportSequence reducedMotion={reportReduceMotion} onComplete={finishReportOpening} onCancel={closeReport} />
               ) : (
                 <>
               <motion.header className="mission-report-header" variants={reportContentReveal} custom={0}>
@@ -363,14 +368,14 @@ export default function WorkShowcase() {
                   </div>
 
                   <div className="mission-report-actions">
-                    <button type="button" className="mission-report-action" aria-disabled="true" aria-label="GitHub is uploading and is not available yet">
+                    <button type="button" className="mission-report-action" aria-disabled="true" aria-label="GitHub is uploading and is not available yet" onClick={(event) => event.currentTarget.focus({ preventScroll: true })}>
                       <FaGithub aria-hidden="true" />
                       <span className="mission-report-action-copy" aria-hidden="true">
                         <span className="mission-report-action-default">Inspect GitHub</span>
                         <span className="mission-report-action-uploading">Uploading</span>
                       </span>
                     </button>
-                    <button type="button" className="mission-report-action" aria-disabled="true" aria-label="CV is uploading and is not available yet">
+                    <button type="button" className="mission-report-action" aria-disabled="true" aria-label="CV is uploading and is not available yet" onClick={(event) => event.currentTarget.focus({ preventScroll: true })}>
                       <FaFilePdf aria-hidden="true" />
                       <span className="mission-report-action-copy" aria-hidden="true">
                         <span className="mission-report-action-default">View ENG CV</span>

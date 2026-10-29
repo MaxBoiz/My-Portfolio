@@ -20,7 +20,7 @@ body { margin: 0; overflow-x: clip; background: var(--background); color: var(--
 
 .orb { position: absolute; pointer-events: none; border-radius: 999px; filter: blur(110px); }
 .orb-one { top: 18%; left: 18%; width: 360px; height: 360px; background: rgba(79, 70, 229, 0.13); }
-.nav-link { transition: color 180ms ease; }
+.nav-link { display: inline-flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; transition: color 180ms ease; }
 .nav-link:hover { color: white; }
 
 .social-button {
@@ -42,9 +42,7 @@ body { margin: 0; overflow-x: clip; background: var(--background); color: var(--
   box-shadow: inset 0 0 20px rgba(99, 102, 241, 0.06);
   outline: none;
 }
-.cv-access-icon { transition: color 200ms ease; }
-.cv-access-button:is(:hover, :focus-visible) .cv-access-icon { color: rgb(103 232 249); }
-.cv-access-copy { position: relative; display: inline-grid; min-width: 76px; min-height: 18px; align-items: center; }
+.cv-access-copy { position: relative; display: inline-grid; min-width: 76px; min-height: 18px; align-items: center; justify-items: center; text-align: center; }
 .cv-access-copy > span { grid-area: 1 / 1; white-space: nowrap; transition: opacity 160ms ease; }
 .cv-access-loading, .cv-access-ready { opacity: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
 .cv-access-ready { color: rgb(110 231 183); }
@@ -53,8 +51,9 @@ body { margin: 0; overflow-x: clip; background: var(--background); color: var(--
 .cv-access-button:is(:hover, :focus-visible) .cv-access-loading { animation: cv-access-loading 900ms ease both; }
 .cv-access-button:is(:hover, :focus-visible) .cv-access-ready { animation: cv-access-ready 900ms ease both; }
 .cv-access-button:is(:hover, :focus-visible) .cv-access-uploading { opacity: 1; }
+.explore-access-button:is(:hover, :focus-visible) { color: rgb(15 23 42); background: rgb(199 210 254); }
+.explore-access-button .cv-access-uploading { color: inherit; }
 .cv-access-unavailable { cursor: not-allowed; }
-.cv-access-unavailable:is(:hover, :focus-visible) .cv-access-icon { color: rgb(165 180 252); }
 
 .globe-tech-label { z-index: 10; outline: none; transition: color 200ms ease, border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease; }
 .globe-tech-label:is(:hover, :focus-visible) { z-index: 30; color: white; border-color: rgba(103, 232, 249, 0.42); background: rgba(15, 23, 42, 0.95); box-shadow: 0 0 28px rgba(79, 70, 229, 0.2); }
@@ -263,10 +262,10 @@ body { margin: 0; overflow-x: clip; background: var(--background); color: var(--
   text-transform: uppercase;
   transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
 }
-.work-card-featured:hover .mission-report-trigger { opacity: 1; pointer-events: auto; transform: translateY(0); visibility: visible; }
+.work-card-featured:is(:hover, :focus-within) .mission-report-trigger { opacity: 1; pointer-events: auto; transform: translateY(0); visibility: visible; }
 .mission-report-trigger svg { font-size: 8px; transition: transform 200ms ease; }
 .mission-report-trigger:is(:hover, :focus-visible) { border-color: rgba(103, 232, 249, 0.5); outline: none; background: rgba(79, 70, 229, 0.18); color: white; box-shadow: 0 0 22px rgba(99, 102, 241, 0.14); transform: translateY(-2px); }
-.work-card-featured:hover .mission-report-trigger:is(:hover, :focus-visible) { transform: translateY(-2px); }
+.work-card-featured:is(:hover, :focus-within) .mission-report-trigger:is(:hover, :focus-visible) { transform: translateY(-2px); }
 .mission-report-trigger:is(:hover, :focus-visible) svg { transform: translateX(3px); }
 
 .mission-report-backdrop {
@@ -659,7 +658,18 @@ body { margin: 0; overflow-x: clip; background: var(--background); color: var(--
   .mission-report-actions .mission-report-action { min-height: 44px; justify-content: center; }
 }
 
+@media (max-height: 560px) {
+  .mission-report-backdrop:has(.is-opening) { align-items: start; }
+}
+
 @media (hover: none), (pointer: coarse) {
+  .mission-report-trigger { min-height: 44px; opacity: 1; pointer-events: auto; transform: none; visibility: visible; }
+  .cv-access-unavailable:is(:focus, :active) .cv-access-default,
+  .explore-access-button:is(:focus, :active) .cv-access-default,
+  .mission-report-action:is(:focus, :active) .mission-report-action-default { opacity: 0; }
+  .cv-access-unavailable:is(:focus, :active) .cv-access-uploading,
+  .explore-access-button:is(:focus, :active) .cv-access-uploading,
+  .mission-report-action:is(:focus, :active) .mission-report-action-uploading { opacity: 1; transform: none; }
   .work-card:is(:hover, :focus-visible) { transform: none; }
   .work-card:is(:hover, :focus-visible) .work-card-default { opacity: 1; transform: none; filter: none; }
   .work-card:is(:hover, :focus-visible) .work-card-readout { opacity: 0; transform: translateY(10px); }
