@@ -329,14 +329,14 @@ export function runMissionReportSequence(card: HTMLElement, onComplete: () => vo
 
 
   // Same auto-fill as the reference's ?demo=1; no OTP input is required.
-  const demoDigits = "2003";
-  demoDigits.split("").forEach((digit, index) => {
+  const demoCode = "TEST";
+  demoCode.split("").forEach((character, index) => {
     later(() => {
       if (state !== "entry") return;
       inputs.forEach(input => input.classList.remove(styles.active));
-      inputs[index].value = digit;
+      inputs[index].value = character;
       inputs[index].classList.add(styles.filled, styles.active);
-      if (index === demoDigits.length - 1) later(beginVerification, 120);
+      if (index === demoCode.length - 1) later(beginVerification, 120);
     }, 420 + index * 420);
   });
 

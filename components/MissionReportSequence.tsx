@@ -26,7 +26,7 @@ export default function MissionReportSequence({ onComplete, onCancel }: {
         </header>
         <div className={styles.otpWrap} data-vault-digits aria-hidden="true">
           {[0, 1, 2, 3].map(index => (
-            <input key={index} className={styles.otpInput} data-vault-digit readOnly tabIndex={-1} aria-label={`Sequence digit ${index + 1}`} />
+            <input key={index} className={styles.otpInput} data-vault-digit readOnly tabIndex={-1} aria-label={`Sequence character ${index + 1}`} />
           ))}
         </div>
         <div className={styles.orbitZone} data-vault-orbit aria-hidden="true" />

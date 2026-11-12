@@ -88,12 +88,12 @@ function fixture() {
   };
 }
 
-test("normal mission sequence retains 2003 and completes exactly once", () => {
+test("normal mission sequence shows TEST and completes exactly once", () => {
   const f = fixture();
   let completed = 0;
   const cleanup = f.run(f.card, () => completed++);
   f.advance(10000);
-  assert.deepEqual(f.inputs.map(input => input.value), ["2", "0", "0", "3"]);
+  assert.deepEqual(f.inputs.map(input => input.value), ["T", "E", "S", "T"]);
   assert.equal(completed, 1);
   assert.ok(f.animations.length > 0);
   assert.equal(f.pending.size, 0);
