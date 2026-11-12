@@ -46,7 +46,7 @@ const capabilities = [
     number: "03",
     channel: "systems" as SignalChannel,
     label: "Systems & experiments",
-    title: "Curiosity, made useful",
+    title: "Curiosity made useful",
     copy: "APIs, prototypes, and small technical experiments that turn unfamiliar ideas into things you can actually use.",
     tags: ["Node.js", "APIs", "Prototyping"],
     readout: [

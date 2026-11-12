@@ -61,7 +61,7 @@ body { margin: 0; overflow-x: clip; background: var(--background); color: var(--
 .globe-tech-telemetry {
   position: absolute;
   top: calc(100% + 8px);
-  display: grid;
+  display: none;
   width: 148px;
   gap: 4px;
   padding: 9px 10px;
@@ -590,6 +590,7 @@ body { margin: 0; overflow-x: clip; background: var(--background); color: var(--
 }
 
 @media (min-width: 640px) {
+  .globe-tech-telemetry { display: grid; }
   .section-shell { width: min(100% - 5rem, 1312px); }
   .work-card { padding: 34px; }
   .work-card-featured { padding-bottom: 84px; }

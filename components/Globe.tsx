@@ -37,12 +37,12 @@ const ringsData = [
 ];
 
 const stackSignals = [
-  { label: "React Native", channel: "mobile", code: "MOB-01", x: "-left-4", y: "top-16", side: "left", delay: 0 },
-  { label: "Next.js", channel: "web", code: "WEB-02", x: "right-10", y: "top-24", side: "right", delay: 0.3 },
-  { label: "TypeScript", channel: "web", code: "TYP-03", x: "-left-4", y: "bottom-28", side: "left", delay: 0.6 },
-  { label: "Node.js", channel: "systems", code: "SYS-04", x: "right-10", y: "bottom-20", side: "right", delay: 0.9 },
-  { label: "Flutter", channel: "mobile", code: "MOB-05", x: "-left-4", y: "top-1/2", side: "left", delay: 1.2 },
-  { label: "Ruby", channel: "systems", code: "RUB-06", x: "right-10", y: "top-1/2", side: "right", delay: 1.5 },
+  { label: "React Native", channel: "mobile", code: "MOB-01", position: "left-0 max-sm:top-[22%] sm:-left-4 sm:top-16", side: "left", delay: 0 },
+  { label: "Next.js", channel: "web", code: "WEB-02", position: "right-0 max-sm:top-[22%] sm:right-10 sm:top-24", side: "right", delay: 0.3 },
+  { label: "TypeScript", channel: "web", code: "TYP-03", position: "left-0 max-sm:top-[78%] sm:-left-4 sm:bottom-28", side: "left", delay: 0.6 },
+  { label: "Node.js", channel: "systems", code: "SYS-04", position: "right-0 max-sm:top-[78%] sm:right-10 sm:bottom-20", side: "right", delay: 0.9 },
+  { label: "Flutter", channel: "mobile", code: "MOB-05", position: "left-0 top-1/2 sm:-left-4", side: "left", delay: 1.2 },
+  { label: "Ruby", channel: "systems", code: "RUB-06", position: "right-0 top-1/2 sm:right-10", side: "right", delay: 1.5 },
 ] as const;
 
 // Stable accessors avoid rebuilding globe layers when only a signal accent changes.
@@ -54,16 +54,14 @@ export default function GlobeComponent() {
   const { activeSignal, signalInteraction } = useSignalInteraction();
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
 
-  // 🔥 NEW: auto size
-  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasSlotRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState(0);
   const zoomTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [isZoomed, setIsZoomed] = useState(false);
 
-  // 🔥 AUTO FIT
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!canvasSlotRef.current) return;
 
     const observer = new ResizeObserver((entries) => {
       const width = entries[0].contentRect.width;
@@ -74,7 +72,7 @@ export default function GlobeComponent() {
       if (newSize > 0) setSize(newSize);
     });
 
-    observer.observe(containerRef.current);
+    observer.observe(canvasSlotRef.current);
 
     return () => observer.disconnect();
   }, []);
@@ -129,11 +127,43 @@ export default function GlobeComponent() {
     setIsZoomed(!isZoomed);
   };
 
-  return (
-    <div
-      ref={containerRef}
-      className="relative flex min-h-[260px] w-full items-center justify-center py-6 sm:min-h-[500px] sm:py-8 lg:py-0"
+  const stackLabels = stackSignals.map(({ label, channel, code, position, side, delay }) => (
+    <motion.div
+      key={label}
+      className={`globe-tech-label globe-tech-label-${side} ${signalStyles.label} ${signalStyles[channel]} absolute ${position} text-xs font-medium px-4 py-1.5 rounded-full
+        bg-gray-900/80 border border-gray-700 text-gray-300
+        backdrop-blur-sm shadow-lg max-sm:max-w-[32%] max-sm:-translate-y-1/2 max-sm:px-2 max-sm:text-center max-sm:text-[11px] max-sm:[overflow-wrap:anywhere]`}
+      tabIndex={0}
+      data-signal-channel={channel}
+      data-signal-active={activeSignal === channel}
+      {...signalInteraction(channel, `stack-${code}`)}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+        y: [0, -6, 0],
+      }}
+      transition={{
+        opacity: { delay, duration: 0.5 },
+        scale: { delay, duration: 0.5 },
+        y: {
+          delay,
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
+      }}
     >
+      <span className="globe-tech-name">{label}</span>
+      <span className="globe-tech-telemetry" aria-hidden="true">
+        <span>Stack detected</span>
+        <strong><i />{code} · Active</strong>
+      </span>
+    </motion.div>
+  ));
+
+  return (
+    <div className="relative flex w-full items-center justify-center py-6 sm:min-h-[500px] sm:py-8 lg:py-0">
       {/* Glow */}
       <div className="absolute scale-75 sm:scale-90 lg:scale-100 w-[520px] h-[520px] rounded-full border border-blue-500/10 animate-[spin_20s_linear_infinite]" />
       <div className="absolute scale-75 sm:scale-90 lg:scale-100 w-[560px] h-[560px] rounded-full border border-purple-500/5 animate-[spin_30s_linear_infinite_reverse]" />
@@ -145,100 +175,66 @@ export default function GlobeComponent() {
         aria-hidden="true"
       />
 
-      {/* LABELS */}
-      <div className="hidden sm:block">
-        {stackSignals.map(({ label, channel, code, x, y, side, delay }) => (
-          <motion.div
-            key={label}
-            className={`globe-tech-label globe-tech-label-${side} ${signalStyles.label} ${signalStyles[channel]} absolute ${x} ${y} text-xs font-medium px-4 py-1.5 rounded-full
-              bg-gray-900/80 border border-gray-700 text-gray-300
-              backdrop-blur-sm shadow-lg`}
-            tabIndex={0}
-            data-signal-channel={channel}
-            data-signal-active={activeSignal === channel}
-            {...signalInteraction(channel, `stack-${code}`)}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              y: [0, -6, 0],
-            }}
-            transition={{
-              opacity: { delay, duration: 0.5 },
-              scale: { delay, duration: 0.5 },
-              y: {
-                delay,
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              },
-            }}
-          >
-            <span className="globe-tech-name">{label}</span>
-            <span className="globe-tech-telemetry" aria-hidden="true">
-              <span>Stack detected</span>
-              <strong><i />{code} · Active</strong>
-            </span>
-          </motion.div>
-        ))}
-      </div>
+      {stackLabels}
 
       {/* Globe */}
-      {size > 0 && (
-        <motion.div
-          onClick={handleClick}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              handleClick();
-            }
-          }}
-          className="globe-interaction flex cursor-pointer items-center justify-center"
-          role="button"
-          tabIndex={0}
-          aria-label={isZoomed ? "Zoom globe out" : "Zoom globe in"}
-          aria-pressed={isZoomed}
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          style={{
-            width: size,
-            height: size,
-            clipPath: "circle(50%)",
-            overflow: "hidden",
-          }}
-        >
-          <Globe
-            ref={globeRef}
-            onGlobeReady={handleGlobeReady}
-            width={size}
-            height={size}
-            backgroundColor="rgba(0,0,0,0)"
-            globeImageUrl="https://unpkg.com/three-globe/example/img/earth-night.jpg"
-            bumpImageUrl="https://unpkg.com/three-globe/example/img/earth-topology.png"
-            atmosphereColor="#6366f1"
-            atmosphereAltitude={0.25}
-            arcsData={arcsData}
-            arcColor={arcColor}
-            arcDashLength={0.4}
-            arcDashGap={0.2}
-            arcDashAnimateTime={2000}
-            arcStroke={0.5}
-            arcAltitude={0.25}
-            pointsData={pointsData}
-            pointLabel="label"
-            pointColor={pointColor}
-            pointAltitude={0.01}
-            pointRadius={0.4}
-            pointsMerge={false}
-            ringsData={ringsData}
-            ringColor={ringColor}
-            ringMaxRadius={3}
-            ringPropagationSpeed={2}
-            ringRepeatPeriod={1500}
-          />
-        </motion.div>
-      )}
+      <div ref={canvasSlotRef} className="flex aspect-square w-4/5 max-w-[500px] items-center justify-center sm:w-full">
+        {size > 0 && (
+          <motion.div
+            onClick={handleClick}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                handleClick();
+              }
+            }}
+            className="globe-interaction flex cursor-pointer items-center justify-center"
+            role="button"
+            tabIndex={0}
+            aria-label={isZoomed ? "Zoom globe out" : "Zoom globe in"}
+            aria-pressed={isZoomed}
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            style={{
+              width: size,
+              height: size,
+              clipPath: "circle(50%)",
+              overflow: "hidden",
+            }}
+          >
+            <Globe
+              ref={globeRef}
+              onGlobeReady={handleGlobeReady}
+              width={size}
+              height={size}
+              backgroundColor="rgba(0,0,0,0)"
+              globeImageUrl="https://unpkg.com/three-globe/example/img/earth-night.jpg"
+              bumpImageUrl="https://unpkg.com/three-globe/example/img/earth-topology.png"
+              atmosphereColor="#6366f1"
+              atmosphereAltitude={0.25}
+              arcsData={arcsData}
+              arcColor={arcColor}
+              arcDashLength={0.4}
+              arcDashGap={0.2}
+              arcDashAnimateTime={2000}
+              arcStroke={0.5}
+              arcAltitude={0.25}
+              pointsData={pointsData}
+              pointLabel="label"
+              pointColor={pointColor}
+              pointAltitude={0.01}
+              pointRadius={0.4}
+              pointsMerge={false}
+              ringsData={ringsData}
+              ringColor={ringColor}
+              ringMaxRadius={3}
+              ringPropagationSpeed={2}
+              ringRepeatPeriod={1500}
+            />
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }
