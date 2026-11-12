@@ -13,7 +13,6 @@ const compiled = ts.transpileModule(source, {
 function fixture() {
   let time = 0;
   let nextId = 0;
-  let queryCount = 0;
   const pending = new Map();
   const animations = [];
   const schedule = (callback, delay = 0) => {
@@ -35,7 +34,6 @@ function fixture() {
       this.classList = { add: (...items) => items.forEach(item => classes.add(item)), remove: (...items) => items.forEach(item => classes.delete(item)) };
     }
     querySelector(selector) {
-      queryCount++;
       if (!this.selectors.has(selector)) this.selectors.set(selector, new Element());
       return this.selectors.get(selector);
     }
@@ -74,7 +72,6 @@ function fixture() {
   return {
     card, inputs, animations, pending,
     run: exports.runMissionReportSequence,
-    get queryCount() { return queryCount; },
     advance(duration) {
       const end = time + duration;
       let steps = 0;
@@ -115,27 +112,5 @@ test("closing during the spiral cancels frames, timers and completion", () => {
   assert.equal(completed, 0);
   assert.equal(f.pending.size, 0);
   assert.ok(f.animations.every(animation => animation.cancelled));
-});
-
-test("reduced motion skips decorative DOM animation", () => {
-  const f = fixture();
-  let completed = 0;
-  f.run(f.card, () => completed++, { reducedMotion: true });
-  f.advance(179);
-  assert.equal(completed, 0);
-  f.advance(1);
-  assert.equal(completed, 1);
-  assert.equal(f.queryCount, 0);
-  assert.equal(f.animations.length, 0);
-});
-
-test("reduced-motion completion is also cancelled when the dialog closes", () => {
-  const f = fixture();
-  let completed = 0;
-  const cleanup = f.run(f.card, () => completed++, { reducedMotion: true });
-  cleanup();
-  f.advance(1000);
-  assert.equal(completed, 0);
-  assert.equal(f.pending.size, 0);
 });
 

@@ -316,7 +316,7 @@ export default function WorkShowcase() {
             >
               <div className="mission-report-grid" aria-hidden="true" />
               {isReportOpening ? (
-                <MissionReportSequence reducedMotion={reportReduceMotion} onComplete={finishReportOpening} onCancel={closeReport} />
+                <MissionReportSequence onComplete={finishReportOpening} onCancel={closeReport} />
               ) : (
                 <>
               <motion.header className="mission-report-header" variants={reportContentReveal} custom={0}>

@@ -42,6 +42,7 @@ const stackSignals = [
   { label: "TypeScript", channel: "web", code: "TYP-03", x: "-left-4", y: "bottom-28", side: "left", delay: 0.6 },
   { label: "Node.js", channel: "systems", code: "SYS-04", x: "right-10", y: "bottom-20", side: "right", delay: 0.9 },
   { label: "Flutter", channel: "mobile", code: "MOB-05", x: "-left-4", y: "top-1/2", side: "left", delay: 1.2 },
+  { label: "Ruby", channel: "systems", code: "RUB-06", x: "right-10", y: "top-1/2", side: "right", delay: 1.5 },
 ] as const;
 
 // Stable accessors avoid rebuilding globe layers when only a signal accent changes.

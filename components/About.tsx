@@ -24,6 +24,7 @@ export default function About() {
           <p className="terminal-answer text-emerald-300">available_for_opportunities<span className="terminal-cursor">_</span></p>
         </div>
       </div>
+      
 
       <div className="divide-y divide-white/[0.14]">
         {principles.map(([number, title, copy, status], index) => (

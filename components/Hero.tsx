@@ -13,7 +13,6 @@ const reveal = {
   }),
 } satisfies Variants;
 
-// Change this single value to true when the updated CV is ready to publish.
 const CV_IS_READY = false;
 const CV_FILE_PATH = "/MaxBoy-CV.pdf";
 
